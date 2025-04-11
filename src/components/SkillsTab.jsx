@@ -1,68 +1,222 @@
-import { Button, Text } from '@radix-ui/themes'
+import { Avatar, Badge, Button, Link, Skeleton, Text } from '@radix-ui/themes'
 import React from 'react'
 import Rating from './Rating.jsx'
+import { usePaginatedUserSkills } from '../api/skills/queries.js'
+import { ClipLoader } from 'react-spinners'
+import ErrorMessage from './ErrorMessage.jsx'
+import { ExternalLinkIcon, GitHubLogoIcon } from '@radix-ui/react-icons'
+import { useSkillEndorsements } from '../api/endorsements/queries.js'
 
-function SkillsTab() {
+function SkillsTab({ userId }) {
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isError,
+    error,
+    refetch
+  } = usePaginatedUserSkills({ userId, limit: 3 })
+  const hasData = !!data?.pages[0]?.totalDocs ?? false;
+
   return (
     <div className='space-y-6 '>
-      {Array.from({ length: 5 }).map(() => (
-        <SkillsCard />
-      ))}
-    </div>
+      {isLoading ? (
+        <div className='text-center'>
+          <ClipLoader className='mx-auto' color='var(--accent-12)' />
+        </div>
+      ) : isError ? (
+        <ErrorMessage error={error} onRetry={refetch} />
+      ) : hasData ? (
+        data?.pages.map((page, idx) => (
+          page.docs.map(({
+            name,
+            category,
+            proficiencyLevel,
+            description,
+            projectUrl,
+            verified,
+            yearsExperience,
+            _id
+          }) => (
+            <SkillsCard
+              key={_id}
+              skillId={_id}
+              name={name}
+              category={category}
+              proficiencyLevel={proficiencyLevel}
+              description={description}
+              projectUrl={projectUrl}
+              verified={verified}
+              yearsExperience={yearsExperience}
+            />
+          ))
+        ))
+      ) : (
+        <Text as='p' className='text-sm' color='gray' weight={'medium'}>
+          No skills added yet.
+        </Text>
+      )}
+      {isFetchingNextPage && (
+        <div className='text-center'>
+          <ClipLoader className='mx-auto' color='var(--accent-12)' />
+        </div>
+      )}
+      {hasNextPage && !isFetchingNextPage && (
+        <div className='text-center'>
+          <Button
+            onClick={() => fetchNextPage()}
+            variant='ghost'
+            highContrast
+            size={'3'}
+            className='font-medium'
+          >
+            Load more
+          </Button>
+        </div>
+      )}
+    </div >
   )
 }
 
 export default SkillsTab
 
 
-function SkillsCard() {
+function SkillsCard({
+  name,
+  category,
+  proficiencyLevel,
+  description,
+  projectUrl,
+  verified,
+  yearsExperience,
+  skillId
+}) {
+  const {
+    data,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isError,
+    error,
+    refetch
+  } = useSkillEndorsements({ skillId, limit: 3 })
+  const hasData = !!data?.pages[0]?.totalDocs ?? false;
+  const totalEndorsements = data?.pages[0]?.totalDocs
+
+
   return (
     <div className='p-6 space-y-6 border border-t-8 border-t-[--accent-12] rounded-xl'>
       <div className='flex items-center justify-between'>
         <div>
-          <Text as='p' className='text-2xl font-semibold'>
-            React
+          <Text as='p' className='flex items-center gap-4 text-2xl font-semibold capitalize'>
+            {name} {verified && <Badge variant='surface' color="green">verified</Badge>}
           </Text>
-          <Text as='p' color='gray' className='' >
-            Frontend • 3 years of experience
+          <Text as='p' color='gray'>
+            <span className='capitalize' >
+              {category}
+            </span>
+            {" "} • {yearsExperience || 0} years of experience
           </Text>
         </div>
         <span>
-          <Rating rating={2}/>
+          <Rating rating={proficiencyLevel || 0} />
         </span>
       </div>
       <Text as='p'>
-        Built multiple production applications using React, Redux, and related ecosystem tools.
+        {description || 'No description provided.'}
       </Text>
+      {projectUrl && <Text as='p' className='flex items-center gap-2'>
+        <GitHubLogoIcon /> <Link size={'2'} highContrast weight={'medium'} href={projectUrl} rel="noopener noreferrer" target='_blank' className='no-underline hover:underline'>View Project</Link> <ExternalLinkIcon />
+      </Text>}
       <div className='flex items-center justify-between'>
+
         <Text as='p' className='font-medium'>
-          Endorsements (3)
+          <Skeleton loading={isLoading}>
+            Endorsements ({totalEndorsements})
+          </Skeleton>
         </Text>
-        <Button
-          highContrast
-        >
-          Endorse
-        </Button>
+        <Skeleton loading={isLoading}>
+          <Button
+            highContrast
+          >
+            Endorse
+          </Button>
+        </Skeleton>
       </div>
       <div className='space-y-3'>
-        <DevCard />
-        <DevCard />
-        <DevCard />
+        {isLoading ? (
+          <div className='text-center'>
+            <ClipLoader className='mx-auto' color='var(--accent-12)' />
+          </div>
+        ) : isError ? (
+          <ErrorMessage error={error} onRetry={refetch} />
+        ) : hasData ? (
+          data?.pages.map((page, idx) => (
+            page.docs.map(({
+              createdAt,
+              endorsedBy: {
+                name,
+                profilePictureUrl,
+              },
+              _id
+            }) => (
+              <DevCard
+                key={_id}
+                createdAt={createdAt}
+                name={name}
+                profilePictureUrl={profilePictureUrl}
+              />
+            ))
+          ))
+        ) : (
+          <Text as='p' className='text-sm' color='gray' weight={'medium'}>
+            No endorsements yet.
+          </Text>
+        )}
+        {isFetchingNextPage && (
+          <ClipLoader className='mx-auto' size={22} color='var(--accent-12)' />
+        )}
+        {hasNextPage && !isFetchingNextPage && (
+          <Button
+            onClick={() => fetchNextPage()}
+            variant='ghost'
+            highContrast
+            className='font-medium'
+          >
+            Show more
+          </Button>
+        )}
       </div>
     </div>
   )
 }
 
-function DevCard() {
+function DevCard({
+  createdAt,
+  name,
+  profilePictureUrl,
+}) {
   return (
     <div className='flex gap-2 p-2 border rounded-md'>
-      <div className='bg-gray-100 rounded-full size-10' />
+      <Avatar
+        src={profilePictureUrl}
+        fallback={name?.charAt(0)?.toUpperCase()}
+        className='object-cover object-center rounded-full size-10 aspect-square'
+        highContrast
+      />
       <div>
-        <Text as='p' className='font-medium'>
-          David Kim
+        <Text as='p' className='font-medium capitalize'>
+          {name}
         </Text>
         <Text as='p' className='text-sm' color='gray'>
-          Endorsed on 3/15/2023
+          Endorsed on {new Date(createdAt).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })}
         </Text>
       </div>
     </div>

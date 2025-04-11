@@ -11,6 +11,8 @@ import Developers from './pages/Developers.jsx'
 import Home from './pages/Home.jsx'
 import NotFound from './pages/NotFound.jsx'
 import EditProfile from './pages/EditProfile.jsx'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -18,7 +20,7 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index element={<Home />} />
       <Route path="/developers" element={<Developers />} />
-      <Route path="/profile/:id" element={<DeveloperProfile />} />
+      <Route path="/profile/:userId" element={<DeveloperProfile />} />
       <Route path="/profile/edit" element={<EditProfile />} />
     </Route>
     <Route path='/auth' element={<Auth />} />
@@ -26,10 +28,24 @@ const router = createBrowserRouter(createRoutesFromElements(
   </Route>
 ))
 
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 60 * 2 * 1000,
+      retry: 2
+    }
+  },
+})
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Theme accentColor='blue' >
-      <RouterProvider router={router} />
-    </Theme>
+    <QueryClientProvider client={queryClient}>
+      <Theme accentColor='blue' >
+        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </Theme>
+    </QueryClientProvider>
   </StrictMode>,
 )

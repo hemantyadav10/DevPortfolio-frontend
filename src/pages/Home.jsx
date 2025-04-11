@@ -1,4 +1,4 @@
-import { Button, Text } from '@radix-ui/themes'
+import { Button, Skeleton, Text } from '@radix-ui/themes'
 import React from 'react'
 import CallToAction from '../components/CallToAction'
 import FeaturesSection from '../components/FeaturesSection'
@@ -6,8 +6,17 @@ import Footer from '../components/Footer'
 import LoginButton from '../components/LoginButton'
 import SampleDeveloperCard from '../components/SampleDeveloperCard '
 import { Link } from 'react-router'
+import { usePlatformStats } from '../api/stats/queries'
 
 function Home() {
+  const {
+    data,
+    isLoading
+  } = usePlatformStats()
+  const totalDevelopers = data?.totalDevelopers ?? 0;
+  const totalEndorsements = data?.totalEndorsements ?? 0;
+  const verifiedSkills = data?.verifiedSkills ?? 0;
+
   return (
     <div className='flex flex-col items-center'>
       <div className='bg-[--accent-12] py-8 sm:py-12 px-6 md:px-12 w-full flex-col lg:flex-row flex items-center gap-6 pb-12 '>
@@ -57,15 +66,27 @@ function Home() {
         <div className="px-4 md:px-6">
           <div className="grid grid-cols-2 gap-8 text-center md:grid-cols-3">
             <div className="space-y-2">
-              <h3 className="text-3xl font-bold">1,200+</h3>
+              <Skeleton loading={isLoading} className='w-20 mx-auto'>
+                <h3 className="text-3xl font-bold">
+                  {totalDevelopers.toLocaleString()}
+                </h3>
+              </Skeleton>
               <p className="text-sm text-muted-foreground">Developer Profiles</p>
             </div>
             <div className="space-y-2">
-              <h3 className="text-3xl font-bold">5,400+</h3>
+              <Skeleton loading={isLoading} className='w-20 mx-auto'>
+                <h3 className="text-3xl font-bold">
+                  {verifiedSkills.toLocaleString()}
+                </h3>
+              </Skeleton>
               <p className="text-sm text-muted-foreground">Verified Skills</p>
             </div>
             <div className="space-y-2">
-              <h3 className="text-3xl font-bold">18,000+</h3>
+              <Skeleton loading={isLoading} className='w-20 mx-auto'>
+                <h3 className="text-3xl font-bold">
+                  {totalEndorsements.toLocaleString()}
+                </h3>
+              </Skeleton>
               <p className="text-sm text-muted-foreground">Skill Endorsements</p>
             </div>
           </div>
