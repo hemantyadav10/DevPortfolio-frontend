@@ -13,6 +13,8 @@ import NotFound from './pages/NotFound.jsx'
 import EditProfile from './pages/EditProfile.jsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import AuthProvider from './context/authContext'
+import PublicRoute from './pages/PublicRoute.jsx'
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -23,7 +25,9 @@ const router = createBrowserRouter(createRoutesFromElements(
       <Route path="/profile/:userId" element={<DeveloperProfile />} />
       <Route path="/profile/edit" element={<EditProfile />} />
     </Route>
-    <Route path='/auth' element={<Auth />} />
+    <Route element={<PublicRoute />}>
+      <Route path='/auth' element={<Auth />} />
+    </Route>
     <Route path='*' element={<NotFound />} />
   </Route>
 ))
@@ -42,10 +46,12 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <Theme accentColor='blue' >
-        <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen={true} />
-      </Theme>
+      <AuthProvider>
+        <Theme accentColor='blue' >
+          <RouterProvider router={router} />
+          <ReactQueryDevtools initialIsOpen={true} />
+        </Theme>
+      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>,
 )

@@ -1,12 +1,11 @@
-import React from 'react';
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
-import { Button, Callout, Text } from '@radix-ui/themes';
-import { Link } from 'react-router';
+import { Button, Callout } from '@radix-ui/themes';
+import React from 'react';
 
-const ErrorMessage = ({ error, onRetry }) => {
+const ErrorMessage = ({ error, onRetry, className='' }) => {
   console.log(error)
   return (
-    <Callout.Root color="red" variant='surface' className='flex items-center mx-auto max-w-fit'>
+    <Callout.Root color="red" variant='surface' className={`flex items-center mx-auto max-w-fit ${className}`}>
       <Callout.Icon>
         <ExclamationTriangleIcon />
       </Callout.Icon>

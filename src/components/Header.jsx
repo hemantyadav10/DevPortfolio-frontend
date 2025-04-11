@@ -1,12 +1,14 @@
 import { HamburgerMenuIcon } from '@radix-ui/react-icons'
-import { DropdownMenu, IconButton, Text } from '@radix-ui/themes'
+import { Avatar, DropdownMenu, IconButton, Text } from '@radix-ui/themes'
 import React, { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router'
 import LoginButton from './LoginButton'
 import Logo from './Logo'
+import { useAuth } from '../context/authContext'
 
 function Header() {
   const [hasShadow, setHasShadow] = useState(false)
+  const { handleLogout, isAuthenticated, user, isLoading } = useAuth()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +18,7 @@ function Header() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
 
   return (
     <div
@@ -38,10 +41,13 @@ function Header() {
         </NavLink>
       </div>
       <div className='items-center hidden gap-2 md:flex'>
-        <LoginButton
-          xs='3'
-        />
-        <Dropdowm />
+        {isAuthenticated ? (
+          <Dropdowm />
+        ) : (
+          <LoginButton
+            xs='3'
+          />
+        )}
       </div>
       <div className='flex md:hidden'>
         <IconButton
@@ -60,23 +66,35 @@ export default Header
 
 
 function Dropdowm() {
+  const { user, handleLogout, isLoading } = useAuth();
+
+  const logout = async (e) => {
+    e.preventDefault();
+    await handleLogout();
+  }
+
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <div className='overflow-hidden rounded-full cursor-pointer size-10 aspect-square'>
-          <img src="https://hiteshchoudhary.b-cdn.net/coding-hero-v2/ch-bronze.png" alt="" className='object-cover object-center w-full h-full' />
-        </div>
+        <IconButton size={'3'} radius='full' variant='soft'>
+          <Avatar
+            src={user?.profilePictureUrl}
+            fallback={user?.name?.charAt(0)?.toUpperCase()}
+            className='object-cover object-center w-full h-full p-[2px] rounded-full'
+            variant='solid'
+          />
+        </IconButton>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content align='end' variant='soft' size={'2'} className='w-56'>
-        <Text as='p' className='px-3'>
-          Alex Davidson
+        <Text as='p' className='px-3 capitalize' >
+          {user?.name}
         </Text>
         <Text as='p' size={'2'} className='px-3' color='gray'>
-          alex@gmail.com
+          {user?.email}
         </Text>
         <DropdownMenu.Separator />
         <DropdownMenu.Item asChild>
-          <Link to={'/profile/1'}>
+          <Link to={`/profile/${user?._id}`}>
             Profile
           </Link>
         </DropdownMenu.Item>
@@ -85,7 +103,9 @@ function Dropdowm() {
             Dashboard
           </Link>
         </DropdownMenu.Item>
-        <DropdownMenu.Item>Log out</DropdownMenu.Item>
+        <DropdownMenu.Item disabled={isLoading} onClick={logout}>
+          {isLoading ? "Logging out..." : "Log out"}
+        </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   )
