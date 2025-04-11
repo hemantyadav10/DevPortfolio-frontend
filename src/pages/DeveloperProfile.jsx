@@ -1,15 +1,18 @@
-import { ArrowLeftIcon, CopyIcon, EnvelopeClosedIcon, ExternalLinkIcon, GitHubLogoIcon, GlobeIcon, LinkedInLogoIcon, Pencil2Icon, TwitterLogoIcon } from '@radix-ui/react-icons'
-import { Avatar, Badge, Button, Code, DataList, Flex, IconButton, Skeleton, Text } from '@radix-ui/themes'
+import { ArrowLeftIcon, EnvelopeClosedIcon, GitHubLogoIcon, GlobeIcon, LinkedInLogoIcon, Pencil2Icon, TwitterLogoIcon } from '@radix-ui/react-icons'
+import { Avatar, Button, Skeleton, Text } from '@radix-ui/themes'
 import React, { useState } from 'react'
 import { Link, useParams } from 'react-router'
+import { useDeveloperProfile } from '../api/developers/queries'
 import OverviewTab from '../components/OverviewTab'
 import SkillsTab from '../components/SkillsTab'
-import { useDeveloperProfile } from '../api/developers/queries'
+import ErrorMessage from '../components/ErrorMessage'
+import { useAuth } from '../context/authContext'
 
 function DeveloperProfile() {
   const [isOverviewTab, setIsOverviewTab] = useState(true)
   const { userId } = useParams()
   const { data: developer, isLoading, isError, error, refetch } = useDeveloperProfile(userId);
+  const { user, isAuthenticated } = useAuth()
 
   const {
     name = '',
@@ -19,7 +22,9 @@ function DeveloperProfile() {
     bio = '',
     profilePictureUrl = '',
     yearsOfExperience = 0,
+    _id
   } = developer ?? {};
+
 
 
   return (
@@ -42,21 +47,24 @@ function DeveloperProfile() {
       </div>
       <div className='flex items-center justify-between my-6'>
         <Text as='p' className='text-3xl font-bold'>
-          My Profile
+          {isAuthenticated ? (
+            user?._id === _id ? "My Profile" : "Profile"
+          ) : (
+            "Profile"
+          )}
         </Text>
-        <Button
-          highContrast
-          asChild
-        >
-          <Link to={'/profile/edit'}>
-            <Pencil2Icon height={20} width={20} /> Edit Profile
-          </Link>
-        </Button>
+        {isAuthenticated && user?._id === _id && (
+          <Button highContrast asChild>
+            <Link to="/profile/edit">
+              <Pencil2Icon height={20} width={20} /> Edit Profile
+            </Link>
+          </Button>
+        )}
       </div>
       <div className='flex flex-col gap-6 mx-auto lg:flex-row'>
         <section className='lg:flex-1 lg:max-w-96'>
-
-          <div className='space-y-6'>
+          {isError && <ErrorMessage error={error} onRetry={refetch} className='max-w-full' />}
+          {!isError && <div className='space-y-6'>
             <div className='overflow-hidden border rounded-xl'>
               <div className='h-28 bg-[--accent-12] relative'>
                 <div className='absolute -translate-y-1/2 bg-[--gray-1] border-4 border-[--color-background] rounded-full size-24 top-full left-6' >
@@ -197,6 +205,7 @@ function DeveloperProfile() {
               )}
             </div>
           </div>
+          }
         </section>
         <section className='lg:flex-1'>
           <div className='relative flex font-medium bg-[--gray-3] border-4 border-[--gray-3] rounded-lg w-max '>

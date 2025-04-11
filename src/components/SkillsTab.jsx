@@ -6,8 +6,10 @@ import { ClipLoader } from 'react-spinners'
 import ErrorMessage from './ErrorMessage.jsx'
 import { ExternalLinkIcon, GitHubLogoIcon } from '@radix-ui/react-icons'
 import { useSkillEndorsements } from '../api/endorsements/queries.js'
+import { useAuth } from '../context/authContext.jsx'
 
 function SkillsTab({ userId }) {
+  const { user } = useAuth()
   const {
     data,
     isLoading,
@@ -17,7 +19,7 @@ function SkillsTab({ userId }) {
     isError,
     error,
     refetch
-  } = usePaginatedUserSkills({ userId, limit: 3 })
+  } = usePaginatedUserSkills({ userId, limit: 3, currentUser: user?._id })
   const hasData = !!data?.pages[0]?.totalDocs ?? false;
 
   return (
@@ -38,7 +40,8 @@ function SkillsTab({ userId }) {
             projectUrl,
             verified,
             yearsExperience,
-            _id
+            _id,
+            isEndorsedByMe
           }) => (
             <SkillsCard
               key={_id}
@@ -50,6 +53,8 @@ function SkillsTab({ userId }) {
               projectUrl={projectUrl}
               verified={verified}
               yearsExperience={yearsExperience}
+              userId={userId}
+              isEndorsedByMe={isEndorsedByMe}
             />
           ))
         ))
@@ -91,7 +96,9 @@ function SkillsCard({
   projectUrl,
   verified,
   yearsExperience,
-  skillId
+  skillId,
+  userId,
+  isEndorsedByMe
 }) {
   const {
     data,
@@ -105,6 +112,7 @@ function SkillsCard({
   } = useSkillEndorsements({ skillId, limit: 3 })
   const hasData = !!data?.pages[0]?.totalDocs ?? false;
   const totalEndorsements = data?.pages[0]?.totalDocs
+  const { isAuthenticated, user } = useAuth()
 
 
   return (
@@ -138,14 +146,18 @@ function SkillsCard({
             Endorsements ({totalEndorsements})
           </Skeleton>
         </Text>
-        <Skeleton loading={isLoading}>
-          <Button
-            highContrast
-          >
-            Endorse
-          </Button>
-        </Skeleton>
-      </div>
+        {isAuthenticated && (user?._id !== userId) && (
+          <Skeleton loading={isLoading}>
+
+            <Button
+              highContrast={!isEndorsedByMe}
+              color={isEndorsedByMe ? "gray" : "blue"}
+            >
+              {isEndorsedByMe ? "Endorsed" : "Endorse"}
+            </Button>
+          </Skeleton>
+        )}
+      </div >
       <div className='space-y-3'>
         {isLoading ? (
           <div className='text-center'>
@@ -161,7 +173,7 @@ function SkillsCard({
                 name,
                 profilePictureUrl,
               },
-              _id
+              _id,
             }) => (
               <DevCard
                 key={_id}
@@ -190,7 +202,7 @@ function SkillsCard({
           </Button>
         )}
       </div>
-    </div>
+    </div >
   )
 }
 

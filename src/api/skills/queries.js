@@ -9,9 +9,9 @@ const useUserSkillsByCategory = (userId) => {
   })
 }
 
-const usePaginatedUserSkills = ({ userId, limit = 10 }) => {
+const usePaginatedUserSkills = ({ userId, limit = 10, currentUser }) => {
   return useInfiniteQuery({
-    queryKey: skillQueryKeys.paginatedByUser({ userId, limit }),
+    queryKey: skillQueryKeys.paginatedByUser({ userId, limit, currentUser }),
     queryFn: ({ pageParam = 1 }) => getAllUserSkills({ userId, page: pageParam, limit }),
     getNextPageParam: (lastPage) => {
       return lastPage?.nextPage || null
