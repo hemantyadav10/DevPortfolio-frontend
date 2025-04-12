@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchAllDevelopers, getCurrentUser, getDeveloperProfile } from "./api";
+import { fetchAllDevelopers, getCurrentUser, getDeveloperProfile, getFeaturedDevelopers } from "./api";
 import { developersKeys } from "./queryKey";
 
 export const userKeys = {
@@ -37,8 +37,16 @@ const useGetCurrentUser = (userId) => {
   });
 };
 
+const useFeaturedDevelopers = () => {
+  return useQuery({
+    queryKey: developersKeys.featured(),
+    queryFn: getFeaturedDevelopers
+  })
+}
+
 export {
   useDevelopers,
   useDeveloperProfile,
-  useGetCurrentUser
+  useGetCurrentUser,
+  useFeaturedDevelopers
 };

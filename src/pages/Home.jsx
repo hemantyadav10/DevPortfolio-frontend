@@ -7,6 +7,9 @@ import LoginButton from '../components/LoginButton'
 import SampleDeveloperCard from '../components/SampleDeveloperCard '
 import { Link } from 'react-router'
 import { usePlatformStats } from '../api/stats/queries'
+import { useFeaturedDevelopers } from '../api/developers/queries'
+import ErrorMessage from '../components/ErrorMessage'
+import FeaturedDeveloperCard from '../components/FeaturedDeveloperCard'
 
 function Home() {
   const {
@@ -16,6 +19,15 @@ function Home() {
   const totalDevelopers = data?.totalDevelopers ?? 0;
   const totalEndorsements = data?.totalEndorsements ?? 0;
   const verifiedSkills = data?.verifiedSkills ?? 0;
+  const {
+    data: featured,
+    isPending,
+    error,
+    isError,
+    refetch
+  } = useFeaturedDevelopers()
+
+  console.log(featured)
 
   return (
     <div className='flex flex-col items-center'>
@@ -139,6 +151,56 @@ function Home() {
                   credibility.
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className='w-full'>
+        <div className="py-12 md:py-24 ">
+          <div className="px-4 md:px-6">
+            <div className="flex flex-col items-center mx-auto space-y-4 text-center">
+              <h2 className="text-3xl font-bold sm:text-4xl">
+                Featured Developers
+              </h2>
+              <p className="sm:text-xl">
+                Discover top developers with verified skills on our platform
+              </p>
+            </div>
+            <div className="grid max-w-6xl grid-cols-1 gap-8 py-12 mx-auto md:grid-cols-2 lg:grid-cols-3">
+              {isPending ? (
+                Array.from({ length: 3 }).map((_, idx) => (
+                  <FeaturedDeveloperCard
+                    loading={isPending}
+                  />
+                ))
+              ) : isError ? (
+                <ErrorMessage error={error} onRetry={refetch} />
+              ) : featured?.length > 0 ? (
+                featured?.map(({
+                  name,
+                  profilePictureUrl,
+                  title,
+                  skills,
+                  yearsOfExperience,
+                  totalEndorsementCount,
+                  _id
+                }) => (
+                  <FeaturedDeveloperCard
+                    key={_id}
+                    name={name}
+                    profilePictureUrl={profilePictureUrl}
+                    title={title}
+                    skills={skills}
+                    yearsOfExperience={yearsOfExperience}
+                    totalEndorsementCount={totalEndorsementCount}
+                    loading={isPending}
+                    _id={_id}
+                  />
+                ))
+              ) : (
+                <>No featured developers</>
+              )}
             </div>
           </div>
         </div>

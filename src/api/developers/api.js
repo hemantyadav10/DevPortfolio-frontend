@@ -52,6 +52,11 @@ const updateProfile = async (data) => {
   return res.data?.data;
 }
 
+const getFeaturedDevelopers=async() => {
+  const { data } = await apiClient.get('/users/featured');
+  return data?.data;
+}
+
 export {
   fetchAllDevelopers,
   getDeveloperProfile,
@@ -59,5 +64,6 @@ export {
   logout,
   getCurrentUser,
   registerUser,
-  updateProfile
+  updateProfile, 
+  getFeaturedDevelopers
 }
