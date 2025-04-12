@@ -1,13 +1,15 @@
-import { Avatar, Badge, Button, Link, Skeleton, Text } from '@radix-ui/themes'
+import { Avatar, Badge, Button, IconButton, Link, Popover, Skeleton, Text } from '@radix-ui/themes'
 import React, { useState } from 'react'
 import Rating from './Rating.jsx'
 import { usePaginatedUserSkills } from '../api/skills/queries.js'
 import { ClipLoader } from 'react-spinners'
 import ErrorMessage from './ErrorMessage.jsx'
-import { ExternalLinkIcon, GitHubLogoIcon } from '@radix-ui/react-icons'
+import { BarChartIcon, ExternalLinkIcon, GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons'
 import { useSkillEndorsements } from '../api/endorsements/queries.js'
 import { useAuth } from '../context/authContext.jsx'
 import { useToggleEndorsement } from '../api/endorsements/mutations.js'
+import AddNewSkillButton from './AddNewSkillButton.jsx'
+import { NavLink } from 'react-router'
 
 function SkillsTab({ userId }) {
   const { user } = useAuth()
@@ -60,9 +62,19 @@ function SkillsTab({ userId }) {
           ))
         ))
       ) : (
-        <Text as='p' className='text-sm' color='gray' weight={'medium'}>
-          No skills added yet.
-        </Text>
+        <div className='flex items-center justify-center border rounded-lg h-72 '>
+          <Text as='div' className='p-4 text-sm text-center '>
+            <div className="p-3 mx-auto mb-2 bg-gray-100 rounded-full aspect-square w-max">
+              <BarChartIcon className="text-blue-500" height={'18'} width={'18'} />
+            </div>
+            {user?._id === userId ? (
+              <div className='flex flex-col items-center gap-6'>
+                You haven't added any skills yet. Start by adding your first skill to showcase your expertise!
+                <AddNewSkillButton />
+              </div>
+            ) : "No skills available at the moment. Visit again soon to see updates to their portfolio."}
+          </Text>
+        </div>
       )}
       {isFetchingNextPage && (
         <div className='text-center'>
@@ -121,12 +133,29 @@ function SkillsCard({
 
   return (
     <div className='p-6 space-y-6 border border-t-8 border-t-[--accent-12] rounded-xl'>
-      <div className='flex items-center justify-between'>
+      <div className='flex flex-wrap items-center justify-between gap-2'>
         <div>
-          <Text as='p' className='flex items-center gap-4 text-2xl font-semibold capitalize'>
+          <Text as='p' className='flex items-center text-2xl font-semibold capitalize gap-x-4'>
             {name} {verified && <Badge variant='surface' color="green">verified</Badge>}
+            {verified && <Popover.Root>
+              <Popover.Trigger>
+                <IconButton
+                  variant='ghost'
+                  color='gray'
+                  radius={"full"}
+                  size={'1'}
+                >
+                  <InfoCircledIcon />
+                </IconButton>
+              </Popover.Trigger>
+              <Popover.Content maxWidth={'300px'} className='py-0 pb-[2px] px-2 rounded border-0 ring-0 bg-[--gray-12] text-[--gray-1]' >
+                <Text size={'1'} m={'0'}>
+                  Verified means this skill has been endorsed by at least 3 other developers.
+                </Text>
+              </Popover.Content>
+            </Popover.Root>}
           </Text>
-          <Text as='p' color='gray'>
+          <Text as='p' color='gray' size={'2'}>
             <span className='capitalize' >
               {category}
             </span>
@@ -182,6 +211,7 @@ function SkillsCard({
               endorsedBy: {
                 name,
                 profilePictureUrl,
+                _id: userId
               },
               _id,
             }) => (
@@ -190,6 +220,7 @@ function SkillsCard({
                 createdAt={createdAt}
                 name={name}
                 profilePictureUrl={profilePictureUrl}
+                _id={userId}
               />
             ))
           ))
@@ -220,19 +251,24 @@ function DevCard({
   createdAt,
   name,
   profilePictureUrl,
+  _id
 }) {
   return (
     <div className='flex gap-2 p-2 border rounded-md'>
-      <Avatar
-        src={profilePictureUrl}
-        fallback={name?.charAt(0)?.toUpperCase()}
-        className='object-cover object-center rounded-full size-10 aspect-square'
-        highContrast
-      />
+      <NavLink to={`/profile/${_id}`}>
+        <Avatar
+          src={profilePictureUrl}
+          fallback={name?.charAt(0)?.toUpperCase()}
+          className='object-cover object-center rounded-full size-10 aspect-square'
+          highContrast
+        />
+      </NavLink>
       <div>
-        <Text as='p' className='font-medium capitalize'>
-          {name}
-        </Text>
+        <NavLink to={`/profile/${_id}`}>
+          <Text as='p' className='font-medium capitalize hover:underline'>
+            {name}
+          </Text>
+        </NavLink>
         <Text as='p' className='text-sm' color='gray'>
           Endorsed on {new Date(createdAt).toLocaleDateString('en-US', {
             year: 'numeric',

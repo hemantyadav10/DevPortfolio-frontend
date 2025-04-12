@@ -1,5 +1,5 @@
 import { InfoCircledIcon } from '@radix-ui/react-icons';
-import { Button, Separator, Text, TextArea, TextField } from '@radix-ui/themes';
+import { Avatar, Button, Separator, Text, TextArea, TextField } from '@radix-ui/themes';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -43,15 +43,16 @@ function EditProfile() {
   }
 
   return (
-    <div className='p-6 py-8 md:px-12'>
-      <div className='max-w-4xl mx-auto sm:border sm:p-6 sm:shadow-lg rounded-xl'>
-        <Text as='p' className='text-3xl font-medium'>
-          Personal Information
-        </Text>
-        <Text as='p' color='gray' mb={'6'}>
-          Add your basic information to create your profile
-        </Text>
-        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
+    <div className=''>
+      <Text as='p' className='text-2xl font-medium'>
+        Personal Information
+      </Text>
+      <Text as='p' color='gray' size={'2'} mb={'4'}>
+        Add your basic information to create your profile
+      </Text>
+      <Separator size={"4"} mb={'4'} />
+      <div className='flex flex-col-reverse w-full lg:flex-row'>
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-full gap-6 md:max-w-md'>
           <label className='col-span-1'>
             <Text as="div" size="2" mb="1" weight="bold">
               Full Name
@@ -61,6 +62,9 @@ function EditProfile() {
               placeholder="John Doe"
               {...register('name', { required: 'Name is required' })}
             />
+            <Text as="div" size="1" mt="1" color="gray">
+              Use your real name or the one you're known professionally by.
+            </Text>
             {errors.name &&
               <Text as='p' size={'1'} mt={'2'} color='red' className='flex items-center gap-1 '>
                 <InfoCircledIcon height={"16"} width={"16"} />{errors.name.message}
@@ -76,6 +80,9 @@ function EditProfile() {
               placeholder="Full Stack Developer"
               {...register('title')}
             />
+            <Text as="div" size="1" mt="1" color="gray">
+              E.g., “Frontend Developer”, “Full Stack Engineer”, “UI/UX Designer”
+            </Text>
           </label>
           <label className='col-span-1'>
             <Text as="div" size="2" mb="1" weight="bold">
@@ -89,6 +96,9 @@ function EditProfile() {
                 min: { value: 0, message: 'Must be a non-negative number' }
               })}
             />
+            <Text as="div" size="1" mt="1" color="gray">
+              Enter a whole number (e.g., 3). Internships count too!
+            </Text>
             {errors.yearsOfExperience &&
               <Text as='p' size={'1'} mt={'2'} color='red' className='flex items-center gap-1 '>
                 <InfoCircledIcon height={"16"} width={"16"} />{errors.yearsOfExperience.message}
@@ -104,7 +114,7 @@ function EditProfile() {
               placeholder="https://example.com/profile.jpg"
               {...register('profilePictureUrl')}
             />
-            <Text as="div" size="2" mt="1" color='gray'>
+            <Text as="div" size="1" mt="1" color='gray'>
               Enter a URL to an image (no file uploads)
             </Text>
           </label>
@@ -115,6 +125,9 @@ function EditProfile() {
             <TextArea resize={'vertical'} size={'3'} placeholder="Tell us about yourself and your experience"
               {...register('bio')}
             />
+            <Text as="div" size="1" mt="1" color="gray">
+              Share your background, specialties, and what you're passionate about.
+            </Text>
           </label>
           <Separator size={'4'} />
           <Text as='p' className='text-xl font-medium'>
@@ -129,6 +142,9 @@ function EditProfile() {
               placeholder="https://github.com/username"
               {...register('github')}
             />
+            <Text as="div" size="1" mt="1" color="gray">
+              Make sure your profile is public so others can view your work.
+            </Text>
           </label>
           <label>
             <Text as="div" size="2" mb="1" weight="bold">
@@ -139,6 +155,9 @@ function EditProfile() {
               placeholder="https://linkedin/in/username"
               {...register('linkedin')}
             />
+            <Text as="div" size="1" mt="1" color="gray">
+              This helps others connect with you professionally.
+            </Text>
           </label>
           <label>
             <Text as="div" size="2" mb="1" weight="bold">
@@ -160,7 +179,7 @@ function EditProfile() {
               {...register('website')}
             />
           </label>
-          <div className='text-right'>
+          <div className=''>
             <Button
               highContrast
               size="3"
@@ -172,6 +191,20 @@ function EditProfile() {
             </Button>
           </div>
         </form>
+        <div className='mb-6 lg:ml-12'>
+          <Text as="div" size="2" mb="1" weight="bold">
+            Profile Picture
+          </Text>
+          <div className='overflow-hidden rounded-full size-48'>
+            <Avatar
+              size={'9'}
+              src={user?.profilePictureUrl}
+              fallback={user?.name?.charAt(0)?.toUpperCase()}
+              className='object-cover object-center w-full h-full rounded-full'
+              highContrast
+            />
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons'
+import { Cross1Icon, DashboardIcon, ExitIcon, GearIcon, HamburgerMenuIcon, PersonIcon } from '@radix-ui/react-icons'
 import { Avatar, DropdownMenu, IconButton, Text } from '@radix-ui/themes'
 import React, { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router'
@@ -127,16 +127,21 @@ function Dropdowm() {
         <DropdownMenu.Separator />
         <DropdownMenu.Item asChild>
           <Link to={`/profile/${user?._id}`}>
-            Profile
+            <PersonIcon />  Profile
           </Link>
         </DropdownMenu.Item>
         <DropdownMenu.Item asChild>
           <Link to={'/dashboard'}>
-            Dashboard
+           <DashboardIcon /> Dashboard
+          </Link>
+        </DropdownMenu.Item>
+        <DropdownMenu.Item asChild>
+          <Link to={'/settings'}>
+           <GearIcon /> Settings
           </Link>
         </DropdownMenu.Item>
         <DropdownMenu.Item disabled={isLoading} onClick={logout}>
-          {isLoading ? "Logging out..." : "Log out"}
+         <ExitIcon /> {isLoading ? "Logging out..." : "Log out"}
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>

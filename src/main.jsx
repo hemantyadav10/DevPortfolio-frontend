@@ -21,6 +21,7 @@ import Overview from './pages/Overview.jsx'
 import Skills from './pages/Skills.jsx'
 import Endorsements from './pages/Endorsements.jsx'
 import { Toaster } from 'react-hot-toast'
+import Settings from './pages/Settings.jsx'
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -30,7 +31,10 @@ const router = createBrowserRouter(createRoutesFromElements(
       <Route path="/developers" element={<Developers />} />
       <Route path="/profile/:userId" element={<DeveloperProfile />} />
       <Route element={<ProtectedRoute />}>
-        <Route path="/profile/edit" element={<EditProfile />} />
+        <Route path='/settings' element={<Settings />}>
+          <Route index element={<EditProfile />} />
+          <Route path='profile' element={<EditProfile />} />
+        </Route>
         <Route path='dashboard' element={<Dashboard />} >
           <Route index element={<Overview />} />
           <Route path='skills' element={<Skills />} />

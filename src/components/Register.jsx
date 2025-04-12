@@ -1,16 +1,17 @@
-import { Button, Callout, Flex, Spinner, Text, TextField } from '@radix-ui/themes'
+import { Button, Callout, Flex, IconButton, Spinner, Text, TextField } from '@radix-ui/themes'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/authContext';
-import { CheckCircledIcon, CheckIcon, InfoCircledIcon } from '@radix-ui/react-icons';
+import { CheckCircledIcon, CheckIcon, EnvelopeClosedIcon, EyeNoneIcon, EyeOpenIcon, InfoCircledIcon, LockClosedIcon, PersonIcon } from '@radix-ui/react-icons';
 import ErrorMessage from './ErrorMessage';
+import { HiAtSymbol } from "react-icons/hi2";;
 
 function Register() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const { handleRegister, isLoading } = useAuth();
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
-
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data) => {
     try {
@@ -52,7 +53,11 @@ function Register() {
             })}
             placeholder="Enter your full name"
             size={'3'}
-          />
+          >
+            <TextField.Slot side='left'>
+              < PersonIcon height="16" width="16" />
+            </TextField.Slot>
+          </TextField.Root>
           {errors.name &&
             <Text as='p' size={'1'} mt={'2'} color='red' className='flex items-center gap-1 '>
               <InfoCircledIcon height={"16"} width={"16"} />{errors.name.message}
@@ -72,8 +77,12 @@ function Register() {
                 message: 'Username must be atleast 2 character(s).'
               }
             })}
-             placeholder="Choose a username"
-          />
+            placeholder="Choose a username"
+          >
+            <TextField.Slot>
+              <HiAtSymbol size={'18'} />
+            </TextField.Slot>
+          </TextField.Root>
           {errors.username &&
             <Text as='p' size={'1'} mt={'2'} color='red' className='flex items-center gap-1 '>
               <InfoCircledIcon height={"16"} width={"16"} />{errors.username.message}
@@ -94,7 +103,11 @@ function Register() {
                 message: 'Invalid Email.',
               }
             })}
-          />
+          >
+            <TextField.Slot side='left'>
+              < EnvelopeClosedIcon height="16" width="16" />
+            </TextField.Slot>
+          </TextField.Root>
           {errors.email &&
             <Text as='p' size={'1'} mt={'2'} color='red' className='flex items-center gap-1 '>
               <InfoCircledIcon height={"16"} width={"16"} />{errors.email.message}
@@ -106,7 +119,8 @@ function Register() {
             Password
           </Text>
           <TextField.Root
-          placeholder="Create a password"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Create a password"
             size={'3'}
             {...register('password', {
               required: 'Password is required.',
@@ -115,7 +129,25 @@ function Register() {
                 message: 'Password must be atleast 6 character(s).'
               },
             })}
-          />
+          >
+            <TextField.Slot side='right'>
+              <IconButton
+                type='button'
+                onClick={() => setShowPassword(!showPassword)}
+                variant='ghost'
+                color='gray'
+                radius='full'
+              >
+                {showPassword
+                  ? < EyeNoneIcon height="16" width="16" />
+                  : < EyeOpenIcon height="16" width="16" />
+                }
+              </IconButton>
+            </TextField.Slot>
+            <TextField.Slot side='left'>
+              <LockClosedIcon height="16" width="16" />
+            </TextField.Slot>
+          </TextField.Root>
           {errors.password &&
             <Text as='p' size={'1'} mt={'2'} color='red' className='flex items-center gap-1 '>
               <InfoCircledIcon height={"16"} width={"16"} />{errors.password.message}
@@ -129,7 +161,7 @@ function Register() {
           disabled={isLoading}
         >
           <Spinner loading={isLoading} />
-          {isLoading ? " Loading..." : "CREATE ACCOUNT"}
+          {isLoading ? " Loading..." : "Create Account"}
         </Button>
       </Flex>
     </form>

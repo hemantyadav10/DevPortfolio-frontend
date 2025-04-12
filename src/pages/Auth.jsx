@@ -52,7 +52,7 @@ function Auth() {
                 className={`flex-1 bg-transparent z-10 p-[6px] ${isSignInPage ? "" : "opacity-70"} transition-opacity duration-300`}
                 onClick={() => setIsSignInPage(true)}
               >
-                Sign in
+                Login
               </button>
               <button
                 className={`flex-1 bg-transparent z-10 p-[6px] ${isSignInPage ? "opacity-70" : ""} transition-opacity duration-300`}

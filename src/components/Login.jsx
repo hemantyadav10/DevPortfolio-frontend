@@ -1,4 +1,4 @@
-import { EyeNoneIcon, EyeOpenIcon, InfoCircledIcon } from '@radix-ui/react-icons';
+import { EyeNoneIcon, EyeOpenIcon, InfoCircledIcon, LockClosedIcon, PersonIcon } from '@radix-ui/react-icons';
 import { Button, Flex, IconButton, Spinner, Text, TextField } from '@radix-ui/themes';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -38,7 +38,11 @@ function Login() {
               required: 'Username or Email is required'
             })}
             placeholder="Enter your username or email"
-          />
+          >
+            <TextField.Slot side='left'>
+              < PersonIcon height="16" width="16" />
+            </TextField.Slot>
+          </TextField.Root>
           {errors.identifier &&
             <Text as='p' size={'1'} mt={'2'} color='red' className='flex items-center gap-1 '>
               <InfoCircledIcon height={"16"} width={"16"} />{errors.identifier.message}
@@ -71,6 +75,9 @@ function Login() {
                 }
               </IconButton>
             </TextField.Slot>
+            <TextField.Slot side='left'>
+              <LockClosedIcon height="16" width="16" />
+            </TextField.Slot>
           </TextField.Root>
           {errors.password &&
             <Text as='p' size={'1'} mt={'2'} color='red' className='flex items-center gap-1 '>
@@ -87,7 +94,7 @@ function Login() {
 
         >
           <Spinner loading={isLoading} />
-          {isLoading ? " Loading..." : "SIGN IN"}
+          {isLoading ? " Loading..." : "Login"}
         </Button>
       </Flex>
     </form>

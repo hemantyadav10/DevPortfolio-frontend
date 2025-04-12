@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, EnvelopeClosedIcon, GitHubLogoIcon, GlobeIcon, LinkedInLogoIcon, Pencil2Icon, TwitterLogoIcon } from '@radix-ui/react-icons'
+import { ArrowLeftIcon, EnvelopeClosedIcon, ExternalLinkIcon, GitHubLogoIcon, GlobeIcon, LinkedInLogoIcon, Pencil2Icon, TwitterLogoIcon } from '@radix-ui/react-icons'
 import { Avatar, Button, Skeleton, Text } from '@radix-ui/themes'
 import React, { useState } from 'react'
 import { Link, useParams } from 'react-router'
@@ -45,7 +45,7 @@ function DeveloperProfile() {
           </Link>
         </Button>
       </div>
-      <div className='flex items-center justify-between my-6'>
+      <div className='flex flex-wrap items-center justify-between gap-2 my-6'>
         <Text as='p' className='text-3xl font-bold'>
           {isAuthenticated ? (
             user?._id === _id ? "My Profile" : "Profile"
@@ -55,7 +55,7 @@ function DeveloperProfile() {
         </Text>
         {isAuthenticated && user?._id === _id && (
           <Button highContrast asChild>
-            <Link to="/profile/edit">
+            <Link to="/settings">
               <Pencil2Icon height={20} width={20} /> Edit Profile
             </Link>
           </Button>
@@ -81,13 +81,13 @@ function DeveloperProfile() {
               </div>
               <div className='p-6 mt-8'>
                 <Skeleton className='max-w-72' loading={isLoading}>
-                  <Text as='p' className='flex items-baseline gap-2 text-2xl font-semibold '>
+                  <Text as='p' className='flex flex-wrap items-baseline text-2xl font-semibold gap-x-2'>
                     <span className='capitalize'>{name}</span>
-                    <Text as='span' color='gray' size={'3'} weight={'medium'}>• {username}</Text>
+                    <Text as='span' color='gray' size={'3'} weight={'medium'}> @{username}</Text>
                   </Text>
                 </Skeleton>
                 <Skeleton className='mt-2 max-w-60' loading={isLoading}>
-                  <Text as='p' color='gray' weight={'medium'}>
+                  <Text as='p'>
                     {title || 'Aspiring Developer'} • {yearsOfExperience ?? 0} years
                   </Text>
                 </Skeleton>
@@ -130,15 +130,15 @@ function DeveloperProfile() {
               ) : (
                 <>
                   <div className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <EnvelopeClosedIcon height={20} width={20} />
+                    <div className="flex items-center gap-2 text-sm">
+                      <EnvelopeClosedIcon />
                       {email}
                     </div>
 
                     {/* GitHub */}
                     {developer?.socialLinks.github && (
-                      <div className="flex items-center gap-2">
-                        <GitHubLogoIcon height={20} width={20} />
+                      <div className="flex items-center gap-2 text-sm">
+                        <GitHubLogoIcon />
                         <a
                           href={developer.socialLinks.github}
                           target="_blank"
@@ -147,13 +147,14 @@ function DeveloperProfile() {
                         >
                           {developer.socialLinks.github}
                         </a>
+                        <ExternalLinkIcon />
                       </div>
                     )}
 
                     {/* LinkedIn */}
                     {developer?.socialLinks.linkedin && (
-                      <div className="flex items-center gap-2">
-                        <LinkedInLogoIcon height={20} width={20} />
+                      <div className="flex items-center gap-2 text-sm">
+                        <LinkedInLogoIcon />
                         <a
                           href={developer.socialLinks.linkedin}
                           target="_blank"
@@ -162,13 +163,14 @@ function DeveloperProfile() {
                         >
                           {developer.socialLinks.linkedin}
                         </a>
+                        <ExternalLinkIcon />
                       </div>
                     )}
 
                     {/* Twitter */}
                     {developer?.socialLinks.twitter && (
-                      <div className="flex items-center gap-2">
-                        <TwitterLogoIcon height={20} width={20} />
+                      <div className="flex items-center gap-2 text-sm">
+                        <TwitterLogoIcon />
                         <a
                           href={developer.socialLinks.twitter}
                           target="_blank"
@@ -177,13 +179,14 @@ function DeveloperProfile() {
                         >
                           {developer.socialLinks.twitter}
                         </a>
+                        <ExternalLinkIcon />
                       </div>
                     )}
 
                     {/* Website */}
                     {developer?.socialLinks.website && (
-                      <div className="flex items-center gap-2">
-                        <GlobeIcon height={20} width={20} />
+                      <div className="flex items-center gap-2 text-sm">
+                        <GlobeIcon />
                         <a
                           href={developer.socialLinks.website}
                           target="_blank"
@@ -192,6 +195,7 @@ function DeveloperProfile() {
                         >
                           {developer.socialLinks.website}
                         </a>
+                        <ExternalLinkIcon />
                       </div>
                     )}
                   </div>
