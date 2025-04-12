@@ -15,6 +15,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import AuthProvider from './context/authContext'
 import PublicRoute from './pages/PublicRoute.jsx'
+import ProtectedRoute from './pages/ProtectedRoute.jsx'
+import Dashboard from './pages/Dashboard.jsx'
+import Overview from './pages/Overview.jsx'
+import Skills from './pages/Skills.jsx'
+import Endorsements from './pages/Endorsements.jsx'
+import { Toaster } from 'react-hot-toast'
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -24,6 +30,13 @@ const router = createBrowserRouter(createRoutesFromElements(
       <Route path="/developers" element={<Developers />} />
       <Route path="/profile/:userId" element={<DeveloperProfile />} />
       <Route path="/profile/edit" element={<EditProfile />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path='dashboard' element={<Dashboard />} >
+          <Route index element={<Overview />} />
+          <Route path='skills' element={<Skills />} />
+          <Route path='endorsements' element={<Endorsements />} />
+        </Route>
+      </Route>
     </Route>
     <Route element={<PublicRoute />}>
       <Route path='/auth' element={<Auth />} />
@@ -49,6 +62,9 @@ createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <Theme accentColor='blue' >
           <RouterProvider router={router} />
+          <Toaster
+            position='bottom-right'
+          />
           <ReactQueryDevtools initialIsOpen={true} />
         </Theme>
       </AuthProvider>

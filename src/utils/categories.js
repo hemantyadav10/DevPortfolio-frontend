@@ -28,3 +28,11 @@ export const validCategories = [
   "iot",
   "game-dev"
 ];
+
+export const proficiencyLevels = [
+  { value: 1, name: '1 - Beginner' },
+  { value: 2, name: '2 - Novice' },
+  { value: 3, name: '3 - Intermediate' },
+  { value: 4, name: '4 - Advanced' },
+  { value: 5, name: '5 - Expert' },
+];

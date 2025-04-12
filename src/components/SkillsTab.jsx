@@ -1,5 +1,5 @@
 import { Avatar, Badge, Button, Link, Skeleton, Text } from '@radix-ui/themes'
-import React from 'react'
+import React, { useState } from 'react'
 import Rating from './Rating.jsx'
 import { usePaginatedUserSkills } from '../api/skills/queries.js'
 import { ClipLoader } from 'react-spinners'
@@ -7,6 +7,7 @@ import ErrorMessage from './ErrorMessage.jsx'
 import { ExternalLinkIcon, GitHubLogoIcon } from '@radix-ui/react-icons'
 import { useSkillEndorsements } from '../api/endorsements/queries.js'
 import { useAuth } from '../context/authContext.jsx'
+import { useToggleEndorsement } from '../api/endorsements/mutations.js'
 
 function SkillsTab({ userId }) {
   const { user } = useAuth()
@@ -65,7 +66,7 @@ function SkillsTab({ userId }) {
       )}
       {isFetchingNextPage && (
         <div className='text-center'>
-          <ClipLoader className='mx-auto' color='var(--accent-12)' />
+          <ClipLoader size={'22'} className='mx-auto' color='var(--accent-12)' />
         </div>
       )}
       {hasNextPage && !isFetchingNextPage && (
@@ -113,6 +114,9 @@ function SkillsCard({
   const hasData = !!data?.pages[0]?.totalDocs ?? false;
   const totalEndorsements = data?.pages[0]?.totalDocs
   const { isAuthenticated, user } = useAuth()
+  const { mutate: toggle, isPending } = useToggleEndorsement({ userId });
+  const [endorsed, setEndorsed] = useState(isEndorsedByMe);
+
 
 
   return (
@@ -146,14 +150,20 @@ function SkillsCard({
             Endorsements ({totalEndorsements})
           </Skeleton>
         </Text>
+
         {isAuthenticated && (user?._id !== userId) && (
           <Skeleton loading={isLoading}>
-
             <Button
-              highContrast={!isEndorsedByMe}
-              color={isEndorsedByMe ? "gray" : "blue"}
+              onClick={() => toggle({ skillId, endorsedTo: userId }, {
+                onSuccess: (res) => {
+                  setEndorsed(prev => !prev);
+                },
+              })}
+              highContrast={!endorsed}
+              color={endorsed ? "gray" : "blue"}
+              disabled={isPending}
             >
-              {isEndorsedByMe ? "Endorsed" : "Endorse"}
+              {isPending ? "Processing..." : endorsed ? "Endorsed" : "Endorse"}
             </Button>
           </Skeleton>
         )}
@@ -161,7 +171,7 @@ function SkillsCard({
       <div className='space-y-3'>
         {isLoading ? (
           <div className='text-center'>
-            <ClipLoader className='mx-auto' color='var(--accent-12)' />
+            <ClipLoader size={'22'} className='mx-auto' color='var(--accent-12)' />
           </div>
         ) : isError ? (
           <ErrorMessage error={error} onRetry={refetch} />

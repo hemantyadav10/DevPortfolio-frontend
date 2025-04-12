@@ -34,7 +34,6 @@ function Login() {
           </Text>
           <TextField.Root
             size={'3'}
-            placeholder="Enter your full name"
             {...register('identifier', {
               required: 'Username or Email is required'
             })}
@@ -52,7 +51,6 @@ function Login() {
           <TextField.Root
             type={showPassword ? 'text' : 'password'}
             size={'3'}
-            placeholder="Enter your email"
             {...register('password', {
               required: 'Password is required'
             })}
