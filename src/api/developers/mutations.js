@@ -1,5 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
-import { login, logout, registerUser } from "./api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { login, logout, registerUser, updateProfile } from "./api";
+import { developersKeys } from "./queryKey";
 
 // Hook to handle user login
 const useLogin = () => {
@@ -22,8 +23,20 @@ const useLogout = () => {
   })
 }
 
+const useUpdateProfile = (userId) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: developersKeys.profile(userId) })
+    }
+  })
+}
+
 export {
   useLogin,
   useLogout,
-  useRegisterUser
+  useRegisterUser,
+  useUpdateProfile
 }

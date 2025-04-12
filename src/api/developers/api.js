@@ -47,11 +47,17 @@ const getCurrentUser = async () => {
   return data?.data;
 }
 
+const updateProfile = async (data) => {
+  const res = apiClient.patch('/users/update-profile', data);
+  return res.data?.data;
+}
+
 export {
   fetchAllDevelopers,
   getDeveloperProfile,
   login,
   logout,
   getCurrentUser,
-  registerUser
+  registerUser,
+  updateProfile
 }

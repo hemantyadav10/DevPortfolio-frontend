@@ -29,8 +29,8 @@ const router = createBrowserRouter(createRoutesFromElements(
       <Route index element={<Home />} />
       <Route path="/developers" element={<Developers />} />
       <Route path="/profile/:userId" element={<DeveloperProfile />} />
-      <Route path="/profile/edit" element={<EditProfile />} />
       <Route element={<ProtectedRoute />}>
+        <Route path="/profile/edit" element={<EditProfile />} />
         <Route path='dashboard' element={<Dashboard />} >
           <Route index element={<Overview />} />
           <Route path='skills' element={<Skills />} />
