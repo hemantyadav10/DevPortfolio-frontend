@@ -37,6 +37,7 @@ function Login() {
             {...register('identifier', {
               required: 'Username or Email is required'
             })}
+            placeholder="Enter your username or email"
           />
           {errors.identifier &&
             <Text as='p' size={'1'} mt={'2'} color='red' className='flex items-center gap-1 '>
@@ -54,6 +55,7 @@ function Login() {
             {...register('password', {
               required: 'Password is required'
             })}
+            placeholder="Enter your password"
           >
             <TextField.Slot side='right'>
               <IconButton

@@ -12,7 +12,15 @@ const toggleEndorsement = async ({ skillId, endorsedTo }) => {
   return data?.data;
 };
 
+const fetchRecentEndorsements = async ({ userId, limit = 3 }) => {
+  const { data } = await apiClient.get(`/endorsements/recent/${userId}`, {
+    params: { limit },
+  });
+  return data?.data;
+};
+
 export {
   getSkillEndorsements,
-  toggleEndorsement
+  toggleEndorsement, 
+  fetchRecentEndorsements
 }

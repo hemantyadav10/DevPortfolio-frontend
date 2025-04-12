@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addSkill, deleteSkill, updateSkill } from "./api";
 import { skillQueryKeys } from "./queryKey";
 import { statsKeys } from "../stats/queryKeys";
+import { endorsementQueryKeys } from "../endorsements/queryKey";
 
 const useUpdateSkill = () => {
   const queryClient = useQueryClient();
@@ -23,6 +24,8 @@ const useDeleteSkill = ({ userId }) => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: skillQueryKeys.all })
       queryClient.invalidateQueries({ queryKey: statsKeys.all });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] })
+      queryClient.invalidateQueries({ queryKey: endorsementQueryKeys.all })
     }
   });
 };
@@ -34,6 +37,7 @@ const useAddSkill = () => {
     mutationFn: addSkill,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: skillQueryKeys.all })
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] })
     }
   })
 }

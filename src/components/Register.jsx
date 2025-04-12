@@ -50,6 +50,7 @@ function Register() {
                 message: 'Name must be atleast 2 character(s).'
               }
             })}
+            placeholder="Enter your full name"
             size={'3'}
           />
           {errors.name &&
@@ -71,6 +72,7 @@ function Register() {
                 message: 'Username must be atleast 2 character(s).'
               }
             })}
+             placeholder="Choose a username"
           />
           {errors.username &&
             <Text as='p' size={'1'} mt={'2'} color='red' className='flex items-center gap-1 '>
@@ -84,6 +86,7 @@ function Register() {
           </Text>
           <TextField.Root
             size={'3'}
+            placeholder="Enter your email address"
             {...register('email', {
               required: 'Email is required.',
               pattern: {
@@ -103,12 +106,13 @@ function Register() {
             Password
           </Text>
           <TextField.Root
+          placeholder="Create a password"
             size={'3'}
             {...register('password', {
               required: 'Password is required.',
               minLength: {
                 value: 6,
-                message: 'Password must be atleast 8 character(s).'
+                message: 'Password must be atleast 6 character(s).'
               },
             })}
           />

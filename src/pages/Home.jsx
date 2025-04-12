@@ -10,6 +10,7 @@ import { usePlatformStats } from '../api/stats/queries'
 import { useFeaturedDevelopers } from '../api/developers/queries'
 import ErrorMessage from '../components/ErrorMessage'
 import FeaturedDeveloperCard from '../components/FeaturedDeveloperCard'
+import { ArrowRightIcon } from '@radix-ui/react-icons'
 
 function Home() {
   const {
@@ -201,6 +202,21 @@ function Home() {
               ) : (
                 <>No featured developers</>
               )}
+            </div>
+            <div className='text-center'>
+              <Button
+                size={{
+                  initial: "3",
+                  xs: "4"
+                }}
+                className='w-full group sm:w-auto'
+                highContrast
+                asChild
+              >
+                <Link to={'/developers'}>
+                  View all developer <ArrowRightIcon height={20} width={20} className='transition-transform duration-300 group-hover:translate-x-1' />
+                </Link>
+              </Button>
             </div>
           </div>
         </div>

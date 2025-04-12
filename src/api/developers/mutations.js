@@ -18,8 +18,12 @@ const useRegisterUser = () => {
 
 // Hook to handle user logout
 const useLogout = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: logout,
+    onSuccess: () => {
+      queryClient.clear()
+    }
   })
 }
 

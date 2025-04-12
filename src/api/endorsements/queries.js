@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getSkillEndorsements } from "./api";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { fetchRecentEndorsements, getSkillEndorsements } from "./api";
 import { endorsementQueryKeys } from "./queryKey";
 
 const useSkillEndorsements = ({ skillId, limit = 5 }) => {
@@ -14,6 +14,16 @@ const useSkillEndorsements = ({ skillId, limit = 5 }) => {
   });
 };
 
+const useRecentEndorsements = ({ userId, limit = 3 }) => {
+  console.log(userId)
+  return useQuery({
+    queryKey: endorsementQueryKeys.recent(userId, limit),
+    queryFn: () => fetchRecentEndorsements({ userId, limit }),
+    enabled: !!userId,
+  });
+};
+
 export {
-  useSkillEndorsements
+  useSkillEndorsements,
+  useRecentEndorsements
 }

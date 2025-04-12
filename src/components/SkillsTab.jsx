@@ -20,7 +20,7 @@ function SkillsTab({ userId }) {
     isError,
     error,
     refetch
-  } = usePaginatedUserSkills({ userId, limit: 3, currentUser: user?._id })
+  } = usePaginatedUserSkills({ userId, limit: 10, currentUser: user?._id })
   const hasData = !!data?.pages[0]?.totalDocs ?? false;
 
   return (
@@ -110,7 +110,7 @@ function SkillsCard({
     isError,
     error,
     refetch
-  } = useSkillEndorsements({ skillId, limit: 3 })
+  } = useSkillEndorsements({ skillId, limit: 5 })
   const hasData = !!data?.pages[0]?.totalDocs ?? false;
   const totalEndorsements = data?.pages[0]?.totalDocs
   const { isAuthenticated, user } = useAuth()
