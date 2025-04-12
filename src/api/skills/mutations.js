@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteSkill, updateSkill } from "./api";
+import { addSkill, deleteSkill, updateSkill } from "./api";
 import { skillQueryKeys } from "./queryKey";
 import { statsKeys } from "../stats/queryKeys";
 
@@ -27,7 +27,19 @@ const useDeleteSkill = ({ userId }) => {
   });
 };
 
+const useAddSkill = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: addSkill,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: skillQueryKeys.all })
+    }
+  })
+}
+
 export {
-  useUpdateSkill, 
-  useDeleteSkill
+  useUpdateSkill,
+  useDeleteSkill,
+  useAddSkill
 }

@@ -53,7 +53,7 @@ function EditSkillDialog({
         setOpen(o)
       }}
     >
-      <Dialog.Content maxWidth="450px">
+      <Dialog.Content maxWidth="500px">
         <Dialog.Title>Edit profile</Dialog.Title>
         <Dialog.Description size="2" mb="4">
           Make changes to your profile.

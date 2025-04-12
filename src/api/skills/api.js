@@ -22,9 +22,15 @@ const deleteSkill = async (skillId) => {
   return response?.data?.data;
 };
 
+const addSkill = async (data) => {
+  const response = await apiClient.post('/skills', data);
+  return response?.data?.data;
+}
+
 export {
   getUserSkillsByCategory,
   getAllUserSkills,
   updateSkill,
-  deleteSkill
+  deleteSkill,
+  addSkill
 }

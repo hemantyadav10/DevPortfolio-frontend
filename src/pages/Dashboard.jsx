@@ -1,7 +1,7 @@
-import { PlusIcon } from '@radix-ui/react-icons'
-import { Button, Text } from '@radix-ui/themes'
-import React from 'react'
-import { NavLink, Outlet, useLocation } from 'react-router'
+import { Text } from '@radix-ui/themes';
+import React from 'react';
+import { NavLink, Outlet, useLocation } from 'react-router';
+import AddNewSkillButton from '../components/AddNewSkillButton';
 
 function Dashboard() {
   const { pathname } = useLocation();
@@ -13,11 +13,7 @@ function Dashboard() {
           <Text as='p' size={'6'} className='font-semibold'>
             Dashboard
           </Text>
-          <Button
-            highContrast
-          >
-            <PlusIcon height={'20'} width={'20'} /> Add Skill
-          </Button>
+          <AddNewSkillButton />
         </div>
         <div>
           <div className='flex p-1 rounded-lg w-max bg-[--gray-3]'>
