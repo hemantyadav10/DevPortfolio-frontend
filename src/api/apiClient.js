@@ -29,12 +29,15 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // If the error is 401 (Unauthorized), try to refresh the access token
+    // Prevent infinite loop: don't retry for the refresh-token endpoint itself
+    const isRefreshRequest = originalRequest.url.includes('/users/refresh-token');
+
+    // If the error is 401, try to refresh the access token
     if (
       error.response &&
       error.response.status === 401 &&
-      error.response.data?.errors?.name === "TokenExpiredError" &&
       !originalRequest._retry
+      && !isRefreshRequest
     ) {
       originalRequest._retry = true; // Mark this request as retried
 
@@ -63,9 +66,11 @@ apiClient.interceptors.response.use(
         localStorage.removeItem('dev-user');
 
         // Clear auth context
-        const { setUser, setIsAuthenticated } = getAuthSetters();
+        const { setUser, setIsAuthenticated, setShowSessionExpiredModal } = getAuthSetters();
         setUser(null);
         setIsAuthenticated(false);
+        setShowSessionExpiredModal(true);
+        return Promise.reject(refreshError);
       }
     }
 

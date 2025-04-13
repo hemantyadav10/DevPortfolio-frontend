@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useGetCurrentUser } from "../api/developers/queries";
 import { useLogin, useLogout, useRegisterUser } from "../api/developers/mutations";
 import { setAuthSetters } from "./authController";
+import SessionExpiredModal from "../components/SessionExpiredModal";
 
 const AuthContext = createContext({
   user: null,
@@ -13,6 +14,8 @@ const AuthContext = createContext({
   setIsAuthenticated: () => { },
   isLoading: false,
   logoutLoading: false,
+  showSessionExpiredModal: false,
+  setShowSessionExpiredModal: () => { },
 });
 
 const AuthProvider = ({ children }) => {
@@ -24,6 +27,8 @@ const AuthProvider = ({ children }) => {
   const { mutateAsync: login, isPending: isLoggingIn } = useLogin();
   const { mutateAsync: register, isPending: isRegistering } = useRegisterUser();
   const { mutateAsync: logout, isPending: isLoggingOut } = useLogout();
+  const [showSessionExpiredModal, setShowSessionExpiredModal] = useState(false);
+
 
   useEffect(() => {
     if (currentUser?.user) {
@@ -34,7 +39,7 @@ const AuthProvider = ({ children }) => {
   }, [currentUser]);
 
   useEffect(() => {
-    setAuthSetters(setUser, setIsAuthenticated);
+    setAuthSetters(setUser, setIsAuthenticated, setShowSessionExpiredModal);
   }, []);
 
   const handleLogin = async ({ identifier, password }) => {
@@ -87,7 +92,10 @@ const AuthProvider = ({ children }) => {
     setIsAuthenticated,
     isLoading: isLoadingUser || isLoggingIn || isLoggingOut || isRegistering,
     logoutLoading: isLoggingOut,
-  }), [currentUser, user, isAuthenticated, isLoadingUser, isLoggingIn, isLoggingOut, isRegistering]);
+    showSessionExpiredModal,
+    setShowSessionExpiredModal,
+  }), [currentUser, user, isAuthenticated, isLoadingUser, isLoggingIn, isLoggingOut, isRegistering, showSessionExpiredModal,
+    setShowSessionExpiredModal,]);
 
   return (
     <AuthContext.Provider value={value}>

@@ -1,12 +1,14 @@
-// src/context/authController.js
 let authSetters = {
   setUser: () => {},
-  setIsAuthenticated: () => {}
+  setIsAuthenticated: () => {}, 
+  setShowSessionExpiredModal: () => {}
 };
 
-export const setAuthSetters = (setUserFn, setIsAuthFn) => {
+export const setAuthSetters = (setUserFn, setIsAuthFn, setShowModalFn) => {
   authSetters.setUser = setUserFn;
   authSetters.setIsAuthenticated = setIsAuthFn;
+  authSetters.setShowSessionExpiredModal = setShowModalFn;
 };
+
 
 export const getAuthSetters = () => authSetters;
