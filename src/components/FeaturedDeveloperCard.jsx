@@ -50,8 +50,8 @@ function FeaturedDeveloperCard({
             <Skeleton loading={loading} className='w-20 h-6 rounded-full' />
           </>
         )}
-        {skills?.map(skill => (
-          <div className='text-sm bg-[--accent-a3] py-[2px] px-3 rounded-full '>
+        {skills?.map((skill) => (
+          <div className='text-sm bg-[--accent-a3] py-[2px] px-3 rounded-full ' key={skill?._id}>
             {skill.name}
           </div>
         ))}

@@ -172,6 +172,7 @@ function Home() {
               {isPending ? (
                 Array.from({ length: 3 }).map((_, idx) => (
                   <FeaturedDeveloperCard
+                  key={idx}
                     loading={isPending}
                   />
                 ))

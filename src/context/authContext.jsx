@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useGetCurrentUser } from "../api/developers/queries";
 import { useLogin, useLogout, useRegisterUser } from "../api/developers/mutations";
+import { setAuthSetters } from "./authController";
 
 const AuthContext = createContext({
   user: null,
@@ -31,6 +32,10 @@ const AuthProvider = ({ children }) => {
       localStorage.setItem('dev-user', JSON.stringify(currentUser.user));
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    setAuthSetters(setUser, setIsAuthenticated);
+  }, []);
 
   const handleLogin = async ({ identifier, password }) => {
     try {
