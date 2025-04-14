@@ -1,18 +1,19 @@
-import { Avatar, Badge, Button, IconButton, Link, Popover, Skeleton, Text } from '@radix-ui/themes'
-import React, { useState } from 'react'
-import Rating from './Rating.jsx'
-import { usePaginatedUserSkills } from '../api/skills/queries.js'
-import { ClipLoader } from 'react-spinners'
-import ErrorMessage from './ErrorMessage.jsx'
 import { BarChartIcon, ExternalLinkIcon, GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons'
-import { useSkillEndorsements } from '../api/endorsements/queries.js'
-import { useAuth } from '../context/authContext.jsx'
-import { useToggleEndorsement } from '../api/endorsements/mutations.js'
-import AddNewSkillButton from './AddNewSkillButton.jsx'
+import { Avatar, Badge, Button, IconButton, Link, Popover, Skeleton, Text } from '@radix-ui/themes'
+import React from 'react'
 import { NavLink } from 'react-router'
+import { ClipLoader } from 'react-spinners'
+import { useToggleEndorsement } from '../api/endorsements/mutations.js'
+import { useSkillEndorsements } from '../api/endorsements/queries.js'
+import { usePaginatedUserSkills } from '../api/skills/queries.js'
+import { useAuth } from '../context/authContext.jsx'
+import AddNewSkillButton from './AddNewSkillButton.jsx'
+import ErrorMessage from './ErrorMessage.jsx'
+import Rating from './Rating.jsx'
 
 function SkillsTab({ userId }) {
   const { user } = useAuth()
+  const skillLimit = 10;
   const {
     data,
     isLoading,
@@ -22,7 +23,7 @@ function SkillsTab({ userId }) {
     isError,
     error,
     refetch
-  } = usePaginatedUserSkills({ userId, limit: 10, currentUser: user?._id })
+  } = usePaginatedUserSkills({ userId, limit: skillLimit, currentUser: user?._id })
   const hasData = !!data?.pages[0]?.totalDocs ?? false;
 
   return (
@@ -58,6 +59,7 @@ function SkillsTab({ userId }) {
               yearsExperience={yearsExperience}
               userId={userId}
               isEndorsedByMe={isEndorsedByMe}
+              skillLimit={skillLimit}
             />
           ))
         ))
@@ -111,8 +113,10 @@ function SkillsCard({
   yearsExperience,
   skillId,
   userId,
-  isEndorsedByMe
+  isEndorsedByMe, 
+  skillLimit
 }) {
+  const limit = 5;
   const {
     data,
     isLoading,
@@ -122,14 +126,12 @@ function SkillsCard({
     isError,
     error,
     refetch
-  } = useSkillEndorsements({ skillId, limit: 5 })
+  } = useSkillEndorsements({ skillId, limit })
   const hasData = !!data?.pages[0]?.totalDocs ?? false;
   const totalEndorsements = data?.pages[0]?.totalDocs
   const { isAuthenticated, user } = useAuth()
-  const { mutate: toggle, isPending } = useToggleEndorsement({ userId });
-  const [endorsed, setEndorsed] = useState(isEndorsedByMe);
 
-
+  const { mutate: toggle, isPending } = useToggleEndorsement({ skillId, limit, userId, isEndorsedByMe, currentUser: user, skillLimit });
 
   return (
     <div className='p-6 space-y-6 border border-t-8 border-t-[--accent-12] rounded-xl'>
@@ -183,16 +185,12 @@ function SkillsCard({
         {isAuthenticated && (user?._id !== userId) && (
           <Skeleton loading={isLoading}>
             <Button
-              onClick={() => toggle({ skillId, endorsedTo: userId }, {
-                onSuccess: (res) => {
-                  setEndorsed(prev => !prev);
-                },
-              })}
-              highContrast={!endorsed}
-              color={endorsed ? "gray" : "blue"}
+              onClick={() => toggle({ skillId, endorsedTo: userId })}
+              highContrast={!isEndorsedByMe}
+              color={isEndorsedByMe ? "gray" : "blue"}
               disabled={isPending}
             >
-              {isPending ? "Processing..." : endorsed ? "Endorsed" : "Endorse"}
+              {isPending ? "Processing..." : isEndorsedByMe ? "Endorsed" : "Endorse"}
             </Button>
           </Skeleton>
         )}
