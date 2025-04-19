@@ -38,9 +38,9 @@ function SkillsCard({
   };
 
   return (
-    <div className='flex flex-wrap items-center justify-between col-span-1 p-4 border rounded-xl gap-x-4 gap-y-2'>
+    <div className='flex flex-wrap items-center justify-between col-span-1 px-4 py-2 border rounded-md gap-x-4 gap-y-2 border-[--gray-a6]'>
       <div>
-        <Text as='p' className='text-lg font-medium capitalize'>
+        <Text as='p' className='font-medium capitalize '>
           {name}
         </Text>
         <Text as='p' color='gray' size={'2'}>
@@ -49,8 +49,8 @@ function SkillsCard({
       </div>
       <div className='flex items-center gap-2'>
         <Rating rating={proficiencyLevel} />
-        <span className='flex items-center gap-1'>
-          <IoMdCheckmarkCircleOutline className='text-green-500 size-5' />
+        <span className='flex items-center gap-1 text-sm'>
+          <IoMdCheckmarkCircleOutline className='text-green-500 size-4' />
           {totalEndorsements}
         </span>
         {showEditButton && <>
@@ -61,6 +61,7 @@ function SkillsCard({
             color="gray"
             className="font-medium"
             onClick={() => setOpen(true)}
+            size={'1'}
           >
             <Pencil1Icon />
           </IconButton>
@@ -71,6 +72,7 @@ function SkillsCard({
             className="font-medium"
             onClick={() => onDelete(_id)}
             disabled={isDeleting}
+            size={'1'}
           >
             <TrashIcon />
           </IconButton>

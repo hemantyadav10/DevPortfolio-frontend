@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/authContext';
 import { CheckCircledIcon, CheckIcon, EnvelopeClosedIcon, EyeNoneIcon, EyeOpenIcon, InfoCircledIcon, LockClosedIcon, PersonIcon } from '@radix-ui/react-icons';
 import ErrorMessage from './ErrorMessage';
-import { HiAtSymbol } from "react-icons/hi2";;
+import { HiAtSymbol } from "react-icons/hi2"; import { useTheme } from 'next-themes';
+;
 
 function Register() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
@@ -12,6 +13,7 @@ function Register() {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
+  const { resolvedTheme } = useTheme()
 
   const onSubmit = async (data) => {
     try {
@@ -155,10 +157,11 @@ function Register() {
           }
         </label>
         <Button
-          size={'4'}
-          mt={'4'}
+          size={'3'}
+          mt={'3'}
           highContrast
           disabled={isLoading}
+          variant={resolvedTheme === 'light' ? "solid" : "soft"}
         >
           <Spinner loading={isLoading} />
           {isLoading ? " Loading..." : "Create Account"}

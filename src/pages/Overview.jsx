@@ -51,8 +51,8 @@ function Overview() {
         ))}
       </div>
 
-      <div className='p-6 border rounded-xl'>
-        <Text as='p' size={'6'} className='font-medium'>
+      <div className='md:p-6 p-4 border rounded-lg border-[--gray-a6] bg-[--color-panel-solid]'>
+        <Text as='p' className='text-xl font-semibold'>
           Recent Endorsements
         </Text>
         <Text as='p' size={'2'} color='gray' mb={'6'} className='capitalize'>
@@ -72,9 +72,10 @@ function Overview() {
         ) : (
           <div className='space-y-4'>
             {endorsements.map((endorsement) => (
-              <div
+              <Link
+                to={`/profile/${endorsement.endorsedBy?._id}`}
                 key={endorsement._id}
-                className='flex items-center justify-between'
+                className='flex items-center justify-between gap-2'
               >
                 <div className='flex items-center gap-3'>
                   <Avatar
@@ -85,10 +86,10 @@ function Overview() {
                     highContrast
                   />
                   <div>
-                    <p className='font-medium capitalize '>
+                    <p className='text-sm font-medium capitalize'>
                       {endorsement.endorsedBy?.name}
                     </p>
-                    <p className='text-xs capitalize '>
+                    <p className='text-xs capitalize'>
                       Endorsed your {endorsement.skillId?.name} skill
                     </p>
                   </div>
@@ -96,7 +97,7 @@ function Overview() {
                 <p className='text-xs text-muted-foreground'>
                   {new Date(endorsement.createdAt).toLocaleDateString()}
                 </p>
-              </div>
+              </Link>
             ))}
           </div>
         )}
@@ -120,8 +121,8 @@ export default Overview
 
 function StatsCard({ title, value, icon, subtitle, loading }) {
   return (
-    <div className="flex items-center gap-4 p-6 bg-white border rounded-2xl">
-      <div className="p-3 bg-gray-100 rounded-full">
+    <div className="flex items-center gap-4 md:p-6 p-4 border border-[--gray-a6] bg-[--color-panel-solid] rounded-lg">
+      <div className="p-3 bg-[--gray-a3] rounded-full">
         {icon}
       </div>
       <div>

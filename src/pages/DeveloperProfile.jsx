@@ -46,7 +46,7 @@ function DeveloperProfile() {
         </Button>
       </div>
       <div className='flex flex-wrap items-center justify-between gap-2 my-6'>
-        <Text as='p' className='text-3xl font-bold'>
+        <Text as='p' className='text-3xl font-semibold'>
           {isAuthenticated ? (
             user?._id === _id ? "My Profile" : "Profile"
           ) : (
@@ -54,7 +54,7 @@ function DeveloperProfile() {
           )}
         </Text>
         {isAuthenticated && user?._id === _id && (
-          <Button highContrast asChild>
+          <Button highContrast asChild variant='soft'>
             <Link to="/settings">
               <Pencil2Icon height={20} width={20} /> Edit Profile
             </Link>
@@ -65,9 +65,9 @@ function DeveloperProfile() {
         <section className='lg:flex-1 lg:max-w-96'>
           {isError && <ErrorMessage error={error} onRetry={refetch} className='max-w-full' />}
           {!isError && <div className='space-y-6'>
-            <div className='overflow-hidden border rounded-xl'>
-              <div className='h-28 bg-[--accent-12] relative'>
-                <div className='absolute -translate-y-1/2 bg-[--gray-1] border-4 border-[--color-background] rounded-full size-24 top-full left-6' >
+            <div className='overflow-hidden border rounded-lg border-[--gray-a6] bg-[--color-panel-solid]'>
+              <div className='h-28 bg-[--primary] relative'>
+                <div className='absolute -translate-y-1/2 bg-[--gray-1] border-4 border-[--color-panel-solid] rounded-full size-24 top-full md:left-6 left-4' >
                   <Skeleton loading={isLoading}>
                     <Avatar
                       size={'8'}
@@ -79,9 +79,9 @@ function DeveloperProfile() {
                   </Skeleton>
                 </div>
               </div>
-              <div className='p-6 mt-8'>
+              <div className='p-4 mt-8 md:p-6'>
                 <Skeleton className='max-w-72' loading={isLoading}>
-                  <Text as='p' className='flex flex-wrap items-baseline text-2xl font-semibold gap-x-2'>
+                  <Text as='p' className='flex flex-wrap items-baseline text-xl font-semibold gap-x-2'>
                     <span className='capitalize'>{name}</span>
                     <Text as='span' color='gray' size={'3'} weight={'medium'}> @{username}</Text>
                   </Text>
@@ -93,8 +93,8 @@ function DeveloperProfile() {
                 </Skeleton>
               </div>
             </div>
-            <div className='p-6 space-y-4 border rounded-xl'>
-              <Text as='p' className='text-2xl font-semibold'>
+            <div className='md:p-6 p-4 space-y-4 border rounded-lg border-[--gray-a6] bg-[--color-panel-solid]'>
+              <Text as='p' className='text-xl font-semibold'>
                 About
               </Text>
               {isLoading && <div className='space-y-2'>
@@ -104,7 +104,7 @@ function DeveloperProfile() {
               </div>}
               {!isLoading && (
                 bio ? (
-                  <Text as='p' className=''>
+                  <Text as='p' className='text-sm'>
                     {bio}
                   </Text>
                 ) : (
@@ -115,8 +115,8 @@ function DeveloperProfile() {
               )
               }
             </div>
-            <div className='p-6 space-y-4 border rounded-xl'>
-              <Text as='p' className='text-2xl font-semibold'>
+            <div className='md:p-6 p-4 space-y-4 border rounded-lg border-[--gray-a6] bg-[--color-panel-solid]'>
+              <Text as='p' className='text-xl font-semibold'>
                 Contact
               </Text>
               {isLoading ? (
@@ -212,16 +212,16 @@ function DeveloperProfile() {
           }
         </section>
         <section className='lg:flex-1'>
-          <div className='relative flex font-medium bg-[--gray-3] border-4 border-[--gray-3] rounded-lg w-max '>
-            <div className={`absolute w-1/2 bg-[--color-background] rounded-md top-0 h-full ${isOverviewTab ? "" : "translate-x-full"} transition-transform duration-300 shadow`} />
+          <div className='relative flex text-sm bg-[--gray-3] border-4 border-[--gray-3] rounded-md w-max font-medium '>
+            <div className={`absolute w-1/2 bg-[--color-background] rounded top-0 h-full ${isOverviewTab ? "" : "translate-x-full"} transition-transform duration-300 shadow`} />
             <button
-              className={` bg-transparent z-10 p-1 ${isOverviewTab ? "" : "opacity-70"} transition-opacity duration-300 w-28`}
+              className={` bg-transparent z-10 p-1 py-[6px] ${isOverviewTab ? "" : "opacity-70"} transition-opacity duration-300 w-24`}
               onClick={() => setIsOverviewTab(true)}
             >
               Overview
             </button>
             <button
-              className={`bg-transparent z-10 p-1 ${isOverviewTab ? "opacity-70" : ""} transition-opacity duration-300 w-28`}
+              className={`bg-transparent z-10 p-1 py-[6px] ${isOverviewTab ? "opacity-70" : ""} transition-opacity duration-300 w-24`}
               onClick={() => setIsOverviewTab(false)}
             >
               Skills

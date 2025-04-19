@@ -10,7 +10,7 @@ const Rating = ({ rating = 0, max = 5 }) => {
         {[...Array(max)].map((_, i) => (
           <div
             key={i}
-            className={`w-[10px] h-[10px] rounded-full ${i < rating ? "bg-[--accent-12]" : "bg-[--gray-a6]"
+            className={`w-2 h-2 rounded-full ${i < rating ? "bg-[--accent-12]" : "bg-[--gray-a6]"
               }`}
           />
         ))}

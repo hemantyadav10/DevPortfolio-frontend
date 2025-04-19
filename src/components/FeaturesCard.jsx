@@ -7,7 +7,7 @@ function FeaturesCard({
   Icon
 }) {
   return (
-    <div className='bg-[--color-background] rounded-lg shadow-lg p-6   md:max-w-96 hover:shadow-xl transition-shadow flex-1'>
+    <div className='bg-[--color-panel-solid] rounded-lg shadow-lg p-6 md:max-w-96 hover:shadow-xl transition-shadow flex-1'>
       <div className='flex items-center gap-2 text-[--accent-12]'>
         {Icon && < Icon size={48} />}
         <Text as='p' size={'5'} weight={'bold'}>

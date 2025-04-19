@@ -29,8 +29,8 @@ function Auth() {
     <>
       <ScrollRestoration />
       <div className='flex flex-col min-h-screen bg-[--gray-a3] md:p-8'>
-        <div className='flex flex-col flex-1 w-full max-w-6xl mx-auto overflow-hidden md:shadow-xl md:rounded-2xl md:flex-row'>
-          <div className='flex flex-col flex-1 gap-6 p-8 bg-[--color-background]'>
+        <div className='flex flex-col flex-1 w-full max-w-6xl mx-auto overflow-hidden md:shadow-xl md:rounded-lg md:flex-row'>
+          <div className='flex flex-col flex-1 gap-6 md:p-8 p-6 bg-[--color-background]'>
             <div className='hidden md:block'>
               <Button
                 variant='ghost'
@@ -46,22 +46,22 @@ function Auth() {
                 </Link>
               </Button>
             </div>
-            <div className='relative flex font-medium bg-[--gray-a3] border-4 border-[--gray-3] rounded-lg '>
+            <div className='relative flex font-medium bg-[--gray-a3] border-4 border-[--gray-3] rounded-lg text-sm'>
               <div className={`absolute w-1/2  rounded-md top-0 h-full ${isSignInPage ? "" : "translate-x-full"} transition-transform duration-300 shadow bg-[--color-background]`} />
               <button
-                className={`flex-1 bg-transparent z-10 p-[6px] ${isSignInPage ? "" : "opacity-70"} transition-opacity duration-300`}
+                className={`flex-1 bg-transparent z-10 p-2 ${isSignInPage ? "" : "opacity-70"} transition-opacity duration-300`}
                 onClick={() => setIsSignInPage(true)}
               >
                 Login
               </button>
               <button
-                className={`flex-1 bg-transparent z-10 p-[6px] ${isSignInPage ? "opacity-70" : ""} transition-opacity duration-300`}
+                className={`flex-1 bg-transparent z-10 p-2 ${isSignInPage ? "opacity-70" : ""} transition-opacity duration-300`}
                 onClick={() => setIsSignInPage(false)}
               >
                 Register
               </button>
             </div>
-            <div className='space-y-4'>
+            <div className='space-y-2'>
               <h1 className='text-2xl font-bold'>
                 {isSignInPage ? (
                   "Welcome back"
@@ -69,7 +69,7 @@ function Auth() {
                   "Create an account"
                 )}
               </h1>
-              <Text as='p' color='gray'>
+              <Text as='p' color='gray' size={'2'}>
                 {isSignInPage ? (
                   "Sign in to your DevPortfolio account to manage your skills and endorsements"
                 ) : (
@@ -84,24 +84,24 @@ function Auth() {
                 : <Register />
             }
           </div >
-          <section className='bg-[--accent-12] flex-1 p-8 flex-col gap-6 flex'>
+          <section className='bg-[--primary] flex-1 md:p-8 p-6 flex-col gap-6 flex'>
             <Logo />
-            <Text as='p' size={'7'} weight={'bold'} className='text-[--gray-1]'>
+            <Text as='p' size={'7'} weight={'bold'} className='text-[--text]'>
               Where developers showcase their {" "}
-              <Text as='span' className='text-[--accent-6]'>
+              <Text as='span' className='text-[--text-accent]'>
                 verified skills
               </Text>
             </Text>
-            <Text as='p' size={'4'} className='text-[--gray-3]'>
+            <Text as='p' size={'4'} className='text-[--text-muted]'>
               Build a professional developer profile with peer-verified skills and get discovered by employers looking for your expertise.
             </Text>
             <div className='flex flex-col gap-4 text-[--gray-1]'>
               {featureCards.map(({ title, description }, idx) => (
                 <div key={idx} className='border p-5 rounded-xl border-[--accent-a9] bg-[--accent-a3] backdrop-blur-md'>
-                  <Text as='p' mb={'2'} weight={'medium'}>
+                  <Text as='p' mb={'2'} weight={'medium'} className='text-[--text]'>
                     {title}
                   </Text>
-                  <Text as='p' size={'2'} className='text-[--gray-3]'>
+                  <Text as='p' size={'2'} className='text-[--text-muted]'>
                     {description}
                   </Text>
                 </div>

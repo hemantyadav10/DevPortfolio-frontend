@@ -22,6 +22,9 @@ import Skills from './pages/Skills.jsx'
 import Endorsements from './pages/Endorsements.jsx'
 import { Toaster } from 'react-hot-toast'
 import Settings from './pages/Settings.jsx'
+import ThemeSetting from './pages/ThemeSetting.jsx'
+import AccountSettings from './pages/AccountSettings.jsx'
+import { ThemeProvider } from 'next-themes'
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -34,6 +37,8 @@ const router = createBrowserRouter(createRoutesFromElements(
         <Route path='/settings' element={<Settings />}>
           <Route index element={<EditProfile />} />
           <Route path='profile' element={<EditProfile />} />
+          <Route path='theme' element={<ThemeSetting />} />
+          <Route path='account' element={<AccountSettings />} />
         </Route>
         <Route path='dashboard' element={<Dashboard />} >
           <Route index element={<Overview />} />
@@ -64,13 +69,19 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Theme accentColor='blue' >
-          <RouterProvider router={router} />
-          <Toaster
-            position='bottom-right'
-          />
-          <ReactQueryDevtools initialIsOpen={true} />
-        </Theme>
+        <ThemeProvider
+          attribute={'class'}
+          disableTransitionOnChange
+          defaultTheme='light'
+        >
+          <Theme accentColor='blue' >
+            <RouterProvider router={router} />
+            <Toaster
+              position='bottom-right'
+            />
+            <ReactQueryDevtools initialIsOpen={true} />
+          </Theme>
+        </ThemeProvider>
       </AuthProvider>
     </QueryClientProvider>
   </StrictMode>,

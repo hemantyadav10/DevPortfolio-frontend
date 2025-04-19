@@ -10,7 +10,7 @@ function NotFound() {
   return (
     <div className='flex flex-col items-center justify-center h-screen p-4 md:px-8'>
       <Logo color='var(--accent-11)' />
-      <div className='flex flex-col max-w-sm gap-4 p-6 py-8 my-6 text-center border border-t-8 shadow-lg rounded-xl border-t-[--red-9]'>
+      <div className='flex flex-col max-w-sm gap-4 p-6 py-8 my-6 text-center border border-t-8 shadow-lg rounded-xl border-t-[--red-9] border-[--gray-a6] bg-[--color-panel-solid]'>
         <div className='p-5 mx-auto rounded-full w-max bg-[--red-a3]'>
           <ExclamationTriangleIcon color='var(--red-9)' height={'32'} width={'32'} />
         </div>

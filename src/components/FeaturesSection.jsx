@@ -23,7 +23,7 @@ const features = [
 function FeaturesSection() {
   return (
     <div className='relative flex justify-center w-full px-6 md:px-12 mb-14'>
-      <div className='absolute h-1/2 bg-[--accent-12] left-0 right-0 -z-10 ' />
+      <div className='absolute h-1/2 bg-[--primary] left-0 right-0 -z-10 ' />
       <div className='z-0 flex flex-col gap-4 md:flex-row'>
         {features.map(({ title, description, Icon }, idx) => (
           <FeaturesCard

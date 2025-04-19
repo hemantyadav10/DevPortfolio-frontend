@@ -9,6 +9,7 @@ function AddNewSkillButton() {
     <>
       <Button
         highContrast
+        variant='soft'
         onClick={() => setOpen(true)}
       >
         <PlusIcon height={'20'} width={'20'} /> Add Skill

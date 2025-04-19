@@ -6,11 +6,14 @@ import { InfoCircledIcon } from '@radix-ui/react-icons';
 import { useAddSkill } from '../api/skills/mutations';
 import toast from 'react-hot-toast';
 import ErrorMessage from './ErrorMessage';
+import { useTheme } from 'next-themes';
 
 function NewSkillDialog({
   open = false,
   setOpen,
 }) {
+  const { resolvedTheme } = useTheme()
+
   const { register, handleSubmit, formState: { errors }, control, reset } = useForm();
   const { mutate, isPending } = useAddSkill();
   const [error, setError] = useState(null)
@@ -42,7 +45,7 @@ function NewSkillDialog({
       }}
     >
       <Dialog.Content maxWidth="500px">
-        <Dialog.Title>Skill Details</Dialog.Title>
+        <Dialog.Title size={'6'}>Skill Details</Dialog.Title>
         <Dialog.Description size="2" mb="4">
           Provide information about your technical skill
         </Dialog.Description>
@@ -96,8 +99,8 @@ function NewSkillDialog({
               }
             </label>
             <Flex direction={'row'} gap={'3'} wrap={'wrap'}>
-              <label className='flex-1'>
-                <Text as="div" size="2" mb="1" weight="bold">
+              <label className='flex-1' >
+                <Text as="div" size="2" mb="1" weight="bold" className='text-nowrap'>
                   Proficiency Level
                 </Text>
                 <Controller
@@ -106,7 +109,7 @@ function NewSkillDialog({
                   rules={{ required: 'Proficiency level is required' }}
                   render={({ field }) => (
                     <Select.Root
-                      value={String(field.value)}
+                      value={field.value != null ? String(field.value) : ""}
                       onValueChange={(value) => field.onChange(Number(value))}
                     >
                       <Select.Trigger className='w-full' placeholder="Select level" />
@@ -193,7 +196,12 @@ function NewSkillDialog({
                 Cancel
               </Button>
             </Dialog.Close>
-            <Button type="submit" highContrast disabled={isPending}>
+            <Button
+              type="submit"
+              highContrast
+              disabled={isPending}
+              variant={resolvedTheme === 'light' ? "solid" : "soft"}
+            >
               {isPending ? 'Saving...' : 'Save'}
             </Button>
           </Flex>

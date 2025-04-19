@@ -4,12 +4,14 @@ import { Controller, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { useUpdateSkill } from '../api/skills/mutations'
 import { proficiencyLevels, validCategories } from '../utils/categories'
+import { useTheme } from 'next-themes'
 
 function EditSkillDialog({
   open = false,
   setOpen,
   data
 }) {
+  const { resolvedTheme } = useTheme()
   const { register, handleSubmit, formState: { errors }, control, reset } = useForm({
     defaultValues: {
       name: data?.name || "",
@@ -54,7 +56,7 @@ function EditSkillDialog({
       }}
     >
       <Dialog.Content maxWidth="500px">
-        <Dialog.Title>Edit profile</Dialog.Title>
+        <Dialog.Title size={'6'}>Edit profile</Dialog.Title>
         <Dialog.Description size="2" mb="4">
           Make changes to your profile.
         </Dialog.Description>
@@ -157,7 +159,12 @@ function EditSkillDialog({
                 Cancel
               </Button>
             </Dialog.Close>
-            <Button type="submit" highContrast disabled={isPending}>
+            <Button
+              type="submit"
+              highContrast
+              disabled={isPending}
+              variant={resolvedTheme === 'light' ? "solid" : "soft"}
+            >
               {isPending ? 'Saving...' : 'Save'}
             </Button>
           </Flex>

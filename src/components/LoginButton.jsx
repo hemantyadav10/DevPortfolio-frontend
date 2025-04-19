@@ -1,11 +1,15 @@
 import { Button, Text } from '@radix-ui/themes'
 import React from 'react'
 import { Link } from 'react-router'
+import { useAuth } from '../context/authContext'
 
 function LoginButton({
   initial = "3",
-  xs = "4"
+  xs = "4",
+  className = ''
 }) {
+  const { isAuthenticated } = useAuth()
+
   return (
     <Button
       variant='soft'
@@ -15,12 +19,13 @@ function LoginButton({
       }}
       highContrast
       asChild
-      className='w-full sm:w-auto'
+      hidden={isAuthenticated}
+      className={`w-full sm:w-auto ${className}`}
     >
       <Link
         to={'/auth'}
       >
-        <Text as='span' className='text-[--gray-1]'>
+        <Text as='span' className='text-[--text]'>
           Log in
         </Text>
       </Link>

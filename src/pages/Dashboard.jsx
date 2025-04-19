@@ -16,22 +16,22 @@ function Dashboard() {
           <AddNewSkillButton />
         </div>
         <div>
-          <div className='flex p-1 rounded-lg w-max bg-[--gray-3]'>
+          <div className='flex p-1 rounded-md w-max bg-[--gray-3]'>
             <NavLink
               to={''}
-              className={` py-2 px-3 rounded-md  ${pathname === "/dashboard" ? "bg-[--color-background] shadow-md" : "opacity-70"} font-medium text-sm`}
+              className={` py-2 px-3 rounded-sm  ${pathname === "/dashboard" ? "bg-[--color-background] shadow-md" : "opacity-70"} font-medium text-sm`}
             >
               Overview
             </NavLink>
             <NavLink
               to={'skills'}
-              className={({ isActive }) => ` py-2 px-3 rounded-md  ${isActive ? "bg-[--color-background] shadow-md" : "opacity-70"} font-medium text-sm`}
+              className={({ isActive }) => ` py-2 px-3 rounded-sm  ${isActive ? "bg-[--color-background] shadow-md" : "opacity-70"} font-medium text-sm`}
             >
               Skills
             </NavLink>
             <NavLink
               to={'endorsements'}
-              className={({ isActive }) => ` py-2 px-3 rounded-md  ${isActive ? "bg-[--color-background] shadow-md" : "opacity-70"} font-medium text-sm`}
+              className={({ isActive }) => ` py-2 px-3 rounded-sm  ${isActive ? "bg-[--color-background] shadow-md" : "opacity-70"} font-medium text-sm`}
             >
               Endorsements
             </NavLink>

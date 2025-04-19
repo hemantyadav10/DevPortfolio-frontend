@@ -6,9 +6,11 @@ import toast from 'react-hot-toast';
 import { LuSave } from "react-icons/lu";
 import { useUpdateProfile } from '../api/developers/mutations';
 import { useAuth } from '../context/authContext';
+import { useTheme } from 'next-themes';
 
 function EditProfile() {
   const { user, setUser } = useAuth();
+  const { resolvedTheme } = useTheme()
 
   const {
     register,
@@ -185,6 +187,7 @@ function EditProfile() {
               size="3"
               type='submit'
               disabled={isPending}
+              variant={resolvedTheme === 'light' ? "solid" : "soft"}
             >
               <LuSave size={20} />
               {isPending ? 'Saving...' : 'Save Profile'}

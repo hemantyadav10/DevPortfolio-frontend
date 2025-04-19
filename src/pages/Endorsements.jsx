@@ -6,6 +6,7 @@ import { ClipLoader } from 'react-spinners'
 import { useSkillEndorsements } from '../api/endorsements/queries'
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
 import ErrorMessage from '../components/ErrorMessage'
+import { Link } from 'react-router'
 
 function Endorsements() {
   const { user } = useAuth()
@@ -23,14 +24,14 @@ function Endorsements() {
 
 
   return (
-    <div className='p-6 border shadow-lg rounded-xl'>
-      <Text as='p' className='text-2xl font-medium'>
+    <div className='md:p-6 p-4 border border-[--gray-a6] shadow-lg rounded-lg bg-[--color-panel-solid]'>
+      <Text as='p' className='text-xl font-semibold'>
         Skill Endorsements
       </Text>
       <Text as='p' size={'2'} color='gray' mb={'6'} className='capitalize'>
         See who has endorsed your skills
       </Text>
-      <div className="space-y-8">
+      <div className="space-y-6">
         {isLoading ? (
           <div className='text-center'>
             <ClipLoader className='mx-auto' color='var(--accent-12)' />
@@ -122,14 +123,14 @@ function SkillsCard({
   const { isAuthenticated, user } = useAuth()
 
   return (
-    <div className='space-y-4'>
+    <div className='space-y-3'>
       <div className='flex flex-wrap items-center justify-between gap-2'>
-        <Text as='p' className='flex items-center gap-4 text-lg font-medium capitalize'>
+        <Text as='p' className='flex items-center gap-4 font-medium capitalize'>
           {name} {verified && <Badge variant='surface' color="green">verified</Badge>}
         </Text>
         <Skeleton loading={isLoading}>
           <div className='flex items-center gap-1 text-sm'>
-            <IoMdCheckmarkCircleOutline className='text-green-500 size-5' /> {totalEndorsements} endorsements
+            <IoMdCheckmarkCircleOutline className='text-green-500 size-4' /> {totalEndorsements} endorsements
           </div>
         </Skeleton>
       </div>
@@ -147,6 +148,7 @@ function SkillsCard({
               endorsedBy: {
                 name,
                 profilePictureUrl,
+                _id: endorsedById
               },
               _id,
             }) => (
@@ -155,6 +157,7 @@ function SkillsCard({
                 createdAt={createdAt}
                 name={name}
                 profilePictureUrl={profilePictureUrl}
+                endorsedById={endorsedById}
               />
             ))
           ))
@@ -188,20 +191,23 @@ function DevCard({
   createdAt,
   name,
   profilePictureUrl,
+  endorsedById
 }) {
   return (
-    <div className='flex gap-2 p-2 border rounded-md'>
+    <Link
+      to={`/profile/${endorsedById}`}
+      className='flex gap-2 p-2 border rounded-md items-center border-[--gray-a6]'>
       <Avatar
         src={profilePictureUrl}
         fallback={name?.charAt(0)?.toUpperCase()}
-        className='object-cover object-center rounded-full size-10 aspect-square'
+        className='object-cover object-center rounded-full size-8 aspect-square'
         highContrast
       />
       <div>
-        <Text as='p' className='font-medium capitalize'>
+        <Text as='p' className='text-sm font-medium capitalize'>
           {name}
         </Text>
-        <Text as='p' className='text-sm' color='gray'>
+        <Text as='p' className='text-xs' color='gray'>
           Endorsed on {new Date(createdAt).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
@@ -209,6 +215,6 @@ function DevCard({
           })}
         </Text>
       </div>
-    </div>
+    </Link>
   )
 }

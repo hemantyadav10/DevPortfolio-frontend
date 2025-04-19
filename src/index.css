@@ -2,9 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-/* * {
-  @apply bg-black text-white;
-} */
+:root {
+	--primary: #113264;
+	--text: #edeef0;
+	--text-muted: #d9d9e0;
+	--text-accent: #acd8fc;
+	--secondary: #008cff0b;
+}
+
+.dark {
+	--primary: #113264;
+	--text: #edeef0;
+	--text-muted: #d9d9e0;
+	--text-accent: #acd8fc;
+	--secondary: rgba(17, 103, 251, 0.048);
+}
+
 
 .radix-themes {
 	--cursor-button: pointer;

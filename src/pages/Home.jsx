@@ -11,8 +11,10 @@ import { useFeaturedDevelopers } from '../api/developers/queries'
 import ErrorMessage from '../components/ErrorMessage'
 import FeaturedDeveloperCard from '../components/FeaturedDeveloperCard'
 import { ArrowRightIcon } from '@radix-ui/react-icons'
+import { useTheme } from 'next-themes'
 
 function Home() {
+  const { resolvedTheme } = useTheme()
   const {
     data,
     isLoading
@@ -28,22 +30,21 @@ function Home() {
     refetch
   } = useFeaturedDevelopers()
 
-  console.log(featured)
 
   return (
     <div className='flex flex-col items-center'>
-      <div className='bg-[--accent-12] py-8 sm:py-12 px-6 md:px-12 w-full flex-col lg:flex-row flex items-center gap-6 pb-12 '>
+      <div className=' bg-[--primary] py-8 sm:py-12 px-6 md:px-12 w-full flex-col lg:flex-row flex items-center gap-6 pb-12 '>
 
         <div className='z-10 flex flex-col flex-1 gap-4'>
-          <Text as='div' className='text-[--gray-1] text-xs sm:text-sm font-medium rounded-full px-4 py-1 bg-[--accent-a4] w-max flex items-center'>
+          <Text as='div' className='text-[--text] text-xs sm:text-sm font-medium rounded-full px-4 py-1 bg-[--accent-a4] w-max flex items-center'>
             <div className="h-2.5 w-2.5 rounded-full bg-gradient-to-b from-[--accent-8] to-[--accent-10] mr-2" />
             Developer-focused professional network
           </Text>
-          <Text as='p' className='text-3xl text-[--gray-1] sm:text-4xl md:text-5xl md:leading-[4rem]' weight={'bold'}>
+          <Text as='p' className='text-3xl text-[--text] sm:text-4xl md:text-5xl md:leading-[4rem]' weight={'bold'}>
             Showcase Your Skills. <br />
             Get Endorsed. Get Hired.
           </Text>
-          <Text as='p' className='text-[--gray-1] md:text-xl'>
+          <Text as='p' className='text-[--text] md:text-xl'>
             Build a professional developer profile with peer-verified skills and get discovered by employers looking for your expertise.
           </Text>
           <div className='flex flex-wrap gap-4 md:mt-4'>
@@ -60,7 +61,7 @@ function Home() {
               <Link
                 to={'/developers'}
               >
-                <Text as='span' className='text-[--gray-1]'>
+                <Text as='span' className='text-[--text]'>
                   Explore Developers
                 </Text>
               </Link>
@@ -75,7 +76,7 @@ function Home() {
 
       <FeaturesSection />
 
-      <section className="w-full py-12 border-t border-b">
+      <section className="w-full py-12 border-t border-b border-[--gray-a6] ">
         <div className="px-4 md:px-6">
           <div className="grid grid-cols-2 gap-8 text-center md:grid-cols-3">
             <div className="space-y-2">
@@ -106,7 +107,7 @@ function Home() {
         </div>
       </section>
 
-      <section id="how-it-works" className='bg-[--accent-a2] w-full'>
+      <section id="how-it-works" className='bg-[--secondary] w-full'>
         <div className="py-12 md:py-24 ">
           <div className="px-4 md:px-6">
             <div className="flex flex-col items-center mx-auto space-y-4 text-center">
@@ -119,7 +120,7 @@ function Home() {
             </div>
             <div className="grid max-w-6xl grid-cols-1 gap-8 py-12 mx-auto md:grid-cols-3">
               <div className="flex flex-col items-center space-y-2 text-center ">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full text-[--gray-1] bg-[--accent-12]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full text-[--gray-1] bg-[--accent-12] font-medium">
                   1
                 </div>
                 <h3 className="text-xl font-bold text-[--accent-12]">
@@ -130,7 +131,7 @@ function Home() {
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2 text-center ">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full text-[--gray-1] bg-[--accent-12]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full text-[--gray-1] bg-[--accent-12] font-medium">
                   2
                 </div>
                 <h3 className="text-xl font-bold text-[--accent-12]">
@@ -141,7 +142,7 @@ function Home() {
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-2 text-center ">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full text-[--gray-1] bg-[--accent-12]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full text-[--gray-1] bg-[--accent-12] font-medium">
                   3
                 </div>
                 <h3 className="text-xl font-bold text-[--accent-12]">
@@ -172,7 +173,7 @@ function Home() {
               {isPending ? (
                 Array.from({ length: 3 }).map((_, idx) => (
                   <FeaturedDeveloperCard
-                  key={idx}
+                    key={idx}
                     loading={isPending}
                   />
                 ))
@@ -213,9 +214,10 @@ function Home() {
                 className='w-full group sm:w-auto'
                 highContrast
                 asChild
+                variant={resolvedTheme === 'light' ? "solid" : "soft"}
               >
                 <Link to={'/developers'}>
-                  View all developer <ArrowRightIcon height={20} width={20} className='transition-transform duration-300 group-hover:translate-x-1' />
+                  View all developers <ArrowRightIcon height={20} width={20} className='transition-transform duration-300 group-hover:translate-x-1' />
                 </Link>
               </Button>
             </div>
@@ -225,9 +227,9 @@ function Home() {
 
 
       <section className='w-full md:px-12'>
-        <div className="py-12 md:py-24 bg-[--accent-12] w-full text-[--gray-1] md:rounded-3xl">
+        <div className="py-12 md:py-24 bg-[--primary] w-full text-[--gray-1] md:rounded-3xl">
           <div className="px-4 md:px-6">
-            <div className="mx-auto  flex max-w-[58rem] flex-col items-center space-y-4 text-center">
+            <div className="mx-auto  flex max-w-[58rem] flex-col items-center space-y-4 text-center text-[--text]">
               <h2 className="text-3xl font-bold sm:text-4xl">
                 Ready to Showcase Your Skills?
               </h2>

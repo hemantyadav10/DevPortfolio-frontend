@@ -10,12 +10,16 @@ function DeveloperCard({
   const name = developer?.name ?? '';
   const title = developer?.title || 'Aspiring Developer';
   const skills = developer?.skills ?? [];
-  const experience = developer?.experience ?? 0;
+  const experience = developer?.yearsOfExperience
+    ?? 0;
   const profilePictureUrl = developer?.profilePictureUrl
 
   return (
-    <div className='w-full p-4 border-t-8 shadow-md rounded-xl border-[--accent-12] flex flex-col gap-4 hover:shadow-lg transition-shadow h-full'>
-      <div className='flex items-start gap-2'>
+    <Link
+      to={`/profile/${developer?._id}`}
+      className='w-full p-4 md:p-6 border-t-8 shadow-md rounded-lg border-[--primary] flex flex-col gap-4 hover:shadow-lg transition-shadow h-full bg-[--color-panel-solid]'
+    >
+      <div className='flex items-start gap-2 '>
         <Avatar
           src={profilePictureUrl}
           fallback={name?.charAt(0)?.toUpperCase()}
@@ -32,7 +36,7 @@ function DeveloperCard({
         </div>
       </div>
       <Text as='p' weight={'medium'} className='text-sm '>
-        TOP SKILLS
+        Top Skills
       </Text>
       <div className='grid grid-cols-1 gap-2 '>
         {skills.length > 0 ? (
@@ -54,16 +58,8 @@ function DeveloperCard({
         <Text as='div' color='gray' className='flex items-center gap-2 '>
           <BackpackIcon /> {experience} years experience
         </Text>
-        <Link
-          className='group'
-          to={`/profile/${developer?._id}`}
-        >
-          <Text as='span' color='blue' weight={'medium'} className='group-hover:underline'>
-            View Profile
-          </Text>
-        </Link>
       </div>
-    </div>
+    </Link>
   )
 }
 
@@ -76,7 +72,7 @@ function Skills({
 }) {
   return (
     <div className='flex items-center justify-between gap-2 capitalize rounded-md'>
-      <Text as='p' className='line-clamp-1' title={skill}>
+      <Text as='p' className='line-clamp-1' title={skill} size='2'>
         {skill}
       </Text>
       <span className='flex items-center gap-1 capi'>

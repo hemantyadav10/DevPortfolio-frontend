@@ -2,7 +2,7 @@ import { Button, Text } from '@radix-ui/themes'
 import React from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router'
 import { useAuth } from '../context/authContext'
-import { GearIcon, PersonIcon } from '@radix-ui/react-icons';
+import { GearIcon, Half2Icon, PersonIcon } from '@radix-ui/react-icons';
 
 function Settings() {
   const { user } = useAuth();
@@ -18,6 +18,7 @@ function Settings() {
         <Button
           highContrast
           asChild
+          variant='soft'
         >
           <NavLink
             to={`/profile/${user?._id}`}
@@ -30,13 +31,18 @@ function Settings() {
         <div className='flex flex-col flex-1 w-full md:max-w-72'>
           <NavLink
             to={'profile'}
-            className={`${(pathname === "/settings" || pathname === "/settings/profile") ? "bg-[--gray-a3] border-[--focus-8] font-medium" : " hover:bg-[--gray-a2] border-transparent"} px-3 py-2 rounded-r-md border-l-4 text-sm flex items-center gap-2`}>
-            <PersonIcon height={'18'} width={'18'}/> Public Profile
+            className={`${(pathname === "/settings" || pathname === "/settings/profile") ? "bg-[--gray-a3] border-[--focus-8] font-medium" : " hover:bg-[--gray-a2] border-transparent"} px-3 py-2 rounded border-l-4 text-sm flex items-center gap-2`}>
+            <PersonIcon height={'18'} width={'18'} /> Public Profile
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to={'account'}
-            className={({ isActive }) => `${isActive ? "bg-[--gray-a3] border-[--focus-8] font-medium" : " hover:bg-[--gray-a2] border-transparent"} px-3 py-2 rounded-r-md border-l-4 text-sm flex items-center gap-2`}>
-            <GearIcon height={'18'} width={'18'}/> Account
+            className={({ isActive }) => `${isActive ? "bg-[--gray-a3] border-[--focus-8] font-medium" : " hover:bg-[--gray-a2] border-transparent"} px-3 py-2 rounded border-l-4 text-sm flex items-center gap-2`}>
+            <GearIcon height={'18'} width={'18'} /> Account
+          </NavLink> */}
+          <NavLink
+            to={'theme'}
+            className={({ isActive }) => `${isActive ? "bg-[--gray-a3] border-[--focus-8] font-medium" : " hover:bg-[--gray-a2] border-transparent"} px-3 py-2 rounded border-l-4 text-sm flex items-center gap-2`}>
+            <Half2Icon height={'18'} width={'18'} /> Theme
           </NavLink>
         </div>
         <div className='flex-1 w-full md:w-max'>

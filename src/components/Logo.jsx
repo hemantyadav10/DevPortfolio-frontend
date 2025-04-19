@@ -3,7 +3,7 @@ import { MdCode } from "react-icons/md";
 import { Link } from "react-router";
 
 function Logo({
-  color = "var(--gray-1)",
+  color = "var(--text)",
   className = ''
 }) {
   return (

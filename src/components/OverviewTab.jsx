@@ -18,16 +18,16 @@ function OverviewTab({ userId, name, loadingProfile }) {
   const hasSkills = data?.length > 0;
 
   return (
-    <div className='p-6 border rounded-xl'>
-      <Text as='p' className='text-3xl font-semibold'>
+    <div className='md:p-6 p-4 border rounded-lg border-[--gray-a6] bg-[--color-panel-solid]'>
+      <Text as='p' className='text-2xl font-semibold'>
         Skills Overview
       </Text>
-      <Text as='p' color='gray' mb={'6'} className='capitalize'>
+      <Text as='p' color='gray' mb={'6'} className='capitalize' size={'2'}>
         <Skeleton loading={loadingProfile}>
           {`${name}'s`} technical skills and endorsements
         </Skeleton>
       </Text>
-      <div className='space-y-10'>
+      <div className='space-y-6'>
         {isLoading ? (
           <div className='text-center'>
             <ClipLoader className='mx-auto' color='var(--accent-12)' />
@@ -37,10 +37,10 @@ function OverviewTab({ userId, name, loadingProfile }) {
         ) : hasSkills ? (
           data.map(({ category, skills, _id }) => (
             <div key={_id}>
-              <Text as='p' className='p-2 text-xl font-medium bg-[--gray-a3] rounded-lg capitalize'>
+              <Text as='p' className='p-2 text-lg font-medium bg-[--gray-a3] rounded-md capitalize'>
                 {category}
               </Text>
-              <div className='grid grid-cols-1 gap-4 pt-6 md:grid-cols-2'>
+              <div className='grid grid-cols-1 gap-3 pt-3 md:grid-cols-2'>
                 {skills.map(({ name, proficiencyLevel,
                   totalEndorsements
                   , verified, _id, yearsExperience, category }) => (

@@ -6,7 +6,7 @@ import { MdStarOutline } from "react-icons/md";
 
 function SampleDeveloperCard() {
   return (
-    <div className='relative flex flex-col flex-1 gap-2 p-4 mr-6 bg-[--color-background] rounded-lg shadow-xl shadow-black/20'>
+    <div className='relative flex flex-col flex-1 gap-2 p-4 mr-6 bg-[--color-panel-solid] rounded-lg shadow-xl shadow-black/20'>
       <div className='flex items-start justify-between'>
         <div className='flex items-start gap-2'>
           <img
@@ -35,7 +35,7 @@ function SampleDeveloperCard() {
         <Skills skill='Typescript' endorsements={35} />
       </div>
 
-      <div className='absolute flex items-center gap-2 p-4 font-medium bg-[--color-background] border rounded-lg shadow-xl top-full -right-6 w-max -translate-y-2/3 shadow-black/20'>
+      <div className='absolute flex items-center gap-2 p-4 font-medium bg-[--color-panel-solid] border rounded-lg shadow-xl top-full -right-6 w-max -translate-y-2/3 shadow-black/20 border-[--gray-a6]'>
         <MdStarOutline size={24} color='gold' /> Skills verified by 42 peers
       </div>
 
@@ -61,7 +61,7 @@ function Skills({
   endorsements = 0
 }) {
   return (
-    <div className='flex items-center justify-between p-2 border rounded-md'>
+    <div className='flex items-center justify-between p-2 border rounded-md border-[--gray-a6]'>
       {skill}
       <span className='flex items-center gap-1'>
         {endorsements} <IoMdCheckmarkCircleOutline className='text-green-500' />

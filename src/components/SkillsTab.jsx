@@ -64,7 +64,7 @@ function SkillsTab({ userId }) {
           ))
         ))
       ) : (
-        <div className='flex items-center justify-center border rounded-lg h-72 '>
+        <div className='flex items-center justify-center border rounded-lg h-72 border-[--gray-a6]'>
           <Text as='div' className='p-4 text-sm text-center '>
             <div className="p-3 mx-auto mb-2 bg-gray-100 rounded-full aspect-square w-max">
               <BarChartIcon className="text-blue-500" height={'18'} width={'18'} />
@@ -89,7 +89,6 @@ function SkillsTab({ userId }) {
             onClick={() => fetchNextPage()}
             variant='ghost'
             highContrast
-            size={'3'}
             className='font-medium'
           >
             Load more
@@ -113,7 +112,7 @@ function SkillsCard({
   yearsExperience,
   skillId,
   userId,
-  isEndorsedByMe, 
+  isEndorsedByMe,
   skillLimit
 }) {
   const limit = 5;
@@ -134,10 +133,10 @@ function SkillsCard({
   const { mutate: toggle, isPending } = useToggleEndorsement({ skillId, limit, userId, isEndorsedByMe, currentUser: user, skillLimit });
 
   return (
-    <div className='p-6 space-y-6 border border-t-8 border-t-[--accent-12] rounded-xl'>
+    <div className='md:p-6 p-4 space-y-4 border border-t-8 border-t-[--primary] rounded-lg border-[--gray-a6] bg-[--color-panel-solid]'>
       <div className='flex flex-wrap items-center justify-between gap-2'>
         <div>
-          <Text as='p' className='flex items-center text-2xl font-semibold capitalize gap-x-4'>
+          <Text as='p' className='flex items-center text-xl font-semibold capitalize gap-x-4'>
             {name} {verified && <Badge variant='surface' color="green">verified</Badge>}
             {verified && <Popover.Root>
               <Popover.Trigger>
@@ -168,15 +167,15 @@ function SkillsCard({
           <Rating rating={proficiencyLevel || 0} />
         </span>
       </div>
-      <Text as='p'>
+      <Text as='p' size={'2'}>
         {description || 'No description provided.'}
       </Text>
-      {projectUrl && <Text as='p' className='flex items-center gap-2'>
+      {projectUrl && <Text as='p' className='flex items-center gap-2 '>
         <GitHubLogoIcon /> <Link size={'2'} highContrast weight={'medium'} href={projectUrl} rel="noopener noreferrer" target='_blank' className='no-underline hover:underline'>View Project</Link> <ExternalLinkIcon />
       </Text>}
       <div className='flex items-center justify-between'>
 
-        <Text as='p' className='font-medium'>
+        <Text as='p' className='text-sm font-medium'>
           <Skeleton loading={isLoading}>
             Endorsements ({totalEndorsements})
           </Skeleton>
@@ -186,16 +185,17 @@ function SkillsCard({
           <Skeleton loading={isLoading}>
             <Button
               onClick={() => toggle({ skillId, endorsedTo: userId })}
-              highContrast={!isEndorsedByMe}
+              highContrast
               color={isEndorsedByMe ? "gray" : "blue"}
               disabled={isPending}
+              variant='soft'
             >
               {isPending ? "Processing..." : isEndorsedByMe ? "Endorsed" : "Endorse"}
             </Button>
           </Skeleton>
         )}
       </div >
-      <div className='space-y-3'>
+      <div className='space-y-2'>
         {isLoading ? (
           <div className='text-center'>
             <ClipLoader size={'22'} className='mx-auto' color='var(--accent-12)' />
@@ -252,22 +252,22 @@ function DevCard({
   _id
 }) {
   return (
-    <div className='flex gap-2 p-2 border rounded-md'>
+    <div className='flex gap-2 p-2 items-center border rounded-md border-[--gray-a6]'>
       <NavLink to={`/profile/${_id}`}>
         <Avatar
           src={profilePictureUrl}
           fallback={name?.charAt(0)?.toUpperCase()}
-          className='object-cover object-center rounded-full size-10 aspect-square'
+          className='object-cover object-center rounded-full size-8 aspect-square'
           highContrast
         />
       </NavLink>
       <div>
         <NavLink to={`/profile/${_id}`}>
-          <Text as='p' className='font-medium capitalize hover:underline'>
+          <Text as='p' className='text-sm font-medium capitalize hover:underline'>
             {name}
           </Text>
         </NavLink>
-        <Text as='p' className='text-sm' color='gray'>
+        <Text as='p' className='text-xs' color='gray'>
           Endorsed on {new Date(createdAt).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',

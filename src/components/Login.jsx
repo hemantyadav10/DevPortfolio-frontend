@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../context/authContext';
 import ErrorMessage from './ErrorMessage';
+import { useTheme } from 'next-themes';
 
 function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -12,6 +13,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState(null)
+  const { resolvedTheme } = useTheme()
 
   const onSubmit = async (data) => {
     try {
@@ -88,10 +90,10 @@ function Login() {
         <Button
           disabled={isLoading}
           type='submit'
-          size={'4'}
-          mt={'4'}
+          size={'3'}
+          mt={'3'}
           highContrast
-
+          variant={resolvedTheme === 'light' ? "solid" : "soft"}
         >
           <Spinner loading={isLoading} />
           {isLoading ? " Loading..." : "Login"}
