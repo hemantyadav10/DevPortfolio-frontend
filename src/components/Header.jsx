@@ -120,7 +120,7 @@ function Dropdowm() {
           />
         </IconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content align='end' variant='soft' size={'2'} className='w-56'>
+      <DropdownMenu.Content align='end' variant='soft' size={'2'} className='w-60'>
         <Text as='p' className='px-3 capitalize' >
           {user?.name}
         </Text>

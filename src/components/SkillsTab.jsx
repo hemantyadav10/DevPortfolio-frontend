@@ -10,6 +10,7 @@ import { useAuth } from '../context/authContext.jsx'
 import AddNewSkillButton from './AddNewSkillButton.jsx'
 import ErrorMessage from './ErrorMessage.jsx'
 import Rating from './Rating.jsx'
+import { toast } from 'sonner'
 
 function SkillsTab({ userId }) {
   const { user } = useAuth()
@@ -132,6 +133,19 @@ function SkillsCard({
 
   const { mutate: toggle, isPending } = useToggleEndorsement({ skillId, limit, userId, isEndorsedByMe, currentUser: user, skillLimit });
 
+  const handleToggle = async () => {
+    toggle({ skillId, endorsedTo: userId }, {
+      onSuccess: () => {
+        const message = isEndorsedByMe ? "Endorsement removed" : "Endorsed successfully";
+        toast.success(message);
+      },
+      onError: (error) => {
+        const message = error?.response?.data?.message || "Action failed. Try again";
+        toast.error(message);
+      }
+    })
+  }
+
   return (
     <div className='md:p-6 p-4 space-y-4 border border-t-8 border-t-[--primary] rounded-lg border-[--gray-a6] bg-[--color-panel-solid]'>
       <div className='flex flex-wrap items-center justify-between gap-2'>
@@ -184,7 +198,7 @@ function SkillsCard({
         {isAuthenticated && (user?._id !== userId) && (
           <Skeleton loading={isLoading}>
             <Button
-              onClick={() => toggle({ skillId, endorsedTo: userId })}
+              onClick={handleToggle}
               highContrast
               color={isEndorsedByMe ? "gray" : "blue"}
               disabled={isPending}

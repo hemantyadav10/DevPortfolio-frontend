@@ -6,6 +6,8 @@ import { useDeleteSkill } from "../api/skills/mutations";
 import { useAuth } from "../context/authContext";
 import EditSkillDialog from "./EditSkillDialog";
 import Rating from "./Rating";
+import ConfirmationDialog from "./ConfirmationDialog";
+import { toast } from "sonner";
 
 function SkillsCard({
   name,
@@ -21,6 +23,7 @@ function SkillsCard({
 }) {
   const { user } = useAuth()
   const [open, setOpen] = useState(false);
+  const [openConfirmation, setOpenConfirmation] = useState(false)
   const data = {
     name,
     category,
@@ -34,7 +37,15 @@ function SkillsCard({
   const { mutate: handleDeleteSkill, isPending: isDeleting } = useDeleteSkill({ userId: user?._id });
 
   const onDelete = (skillId) => {
-    handleDeleteSkill(skillId);
+    handleDeleteSkill(skillId, {
+      onSuccess: () => {
+        toast.success("Skill deleted");
+      },
+      onError: (error) => {
+        const message = error?.response?.data?.message || "Deletion failed";
+        toast.error(message);
+      },
+    });
   };
 
   return (
@@ -70,12 +81,19 @@ function SkillsCard({
             highContrast
             color="red"
             className="font-medium"
-            onClick={() => onDelete(_id)}
+            onClick={() => setOpenConfirmation(true)}
             disabled={isDeleting}
             size={'1'}
           >
             <TrashIcon />
           </IconButton>
+          <ConfirmationDialog
+            open={openConfirmation}
+            setOpen={setOpenConfirmation}
+            skillName={name}
+            loading={isDeleting}
+            action={() => onDelete(_id)}
+          />
           <EditSkillDialog
             setOpen={setOpen}
             open={open}

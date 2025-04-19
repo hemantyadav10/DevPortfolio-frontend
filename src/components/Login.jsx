@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { useAuth } from '../context/authContext';
 import ErrorMessage from './ErrorMessage';
 import { useTheme } from 'next-themes';
+import { toast } from 'sonner';
 
 function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -20,6 +21,7 @@ function Login() {
       setError(null);
       await handleLogin(data);
       navigate(-1);
+      toast.success('Login successful!')
     } catch (error) {
       setError(error);
       console.log(error);

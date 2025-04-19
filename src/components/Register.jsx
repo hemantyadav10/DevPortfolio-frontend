@@ -1,10 +1,11 @@
-import { Button, Callout, Flex, IconButton, Spinner, Text, TextField } from '@radix-ui/themes'
-import React, { useState } from 'react'
+import { CheckCircledIcon, EnvelopeClosedIcon, EyeNoneIcon, EyeOpenIcon, InfoCircledIcon, LockClosedIcon, PersonIcon } from '@radix-ui/react-icons';
+import { Button, Callout, Flex, IconButton, Spinner, Text, TextField } from '@radix-ui/themes';
+import { useTheme } from 'next-themes';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { HiAtSymbol } from "react-icons/hi2";
 import { useAuth } from '../context/authContext';
-import { CheckCircledIcon, CheckIcon, EnvelopeClosedIcon, EyeNoneIcon, EyeOpenIcon, InfoCircledIcon, LockClosedIcon, PersonIcon } from '@radix-ui/react-icons';
 import ErrorMessage from './ErrorMessage';
-import { HiAtSymbol } from "react-icons/hi2"; import { useTheme } from 'next-themes';
 ;
 
 function Register() {

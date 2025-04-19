@@ -1,10 +1,10 @@
 import { Button, Dialog, Flex, Select, Text, TextArea, TextField } from '@radix-ui/themes'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
 import { useUpdateSkill } from '../api/skills/mutations'
 import { proficiencyLevels, validCategories } from '../utils/categories'
 import { useTheme } from 'next-themes'
+import { toast } from 'sonner'
 
 function EditSkillDialog({
   open = false,

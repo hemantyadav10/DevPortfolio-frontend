@@ -3,7 +3,6 @@ import { Button, Callout } from '@radix-ui/themes';
 import React from 'react';
 
 const ErrorMessage = ({ error, onRetry, className='' }) => {
-  console.log(error)
   return (
     <Callout.Root color="red" variant='surface' className={`flex items-center mx-auto max-w-fit ${className}`}>
       <Callout.Icon>

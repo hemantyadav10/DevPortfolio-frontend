@@ -1,6 +1,6 @@
 import axios from "axios";
 import { logout } from "./developers/api";
-import toast from "react-hot-toast";
+import {toast} from "sonner";
 import { getAuthSetters } from "../context/authController";
 
 const apiClient = axios.create({

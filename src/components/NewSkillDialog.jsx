@@ -4,9 +4,9 @@ import { Controller, useForm } from 'react-hook-form'
 import { proficiencyLevels, validCategories } from '../utils/categories';
 import { InfoCircledIcon } from '@radix-ui/react-icons';
 import { useAddSkill } from '../api/skills/mutations';
-import toast from 'react-hot-toast';
 import ErrorMessage from './ErrorMessage';
 import { useTheme } from 'next-themes';
+import { toast } from 'sonner';
 
 function NewSkillDialog({
   open = false,

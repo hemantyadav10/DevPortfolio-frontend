@@ -15,7 +15,6 @@ const useSkillEndorsements = ({ skillId, limit = 5 }) => {
 };
 
 const useRecentEndorsements = ({ userId, limit = 3 }) => {
-  console.log(userId)
   return useQuery({
     queryKey: endorsementQueryKeys.recent(userId, limit),
     queryFn: () => fetchRecentEndorsements({ userId, limit }),

@@ -48,7 +48,7 @@ const getCurrentUser = async () => {
 }
 
 const updateProfile = async (data) => {
-  const res = apiClient.patch('/users/update-profile', data);
+  const res = await apiClient.patch('/users/update-profile', data);
   return res.data?.data;
 }
 

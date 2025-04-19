@@ -1,10 +1,8 @@
 import { Skeleton, Text } from '@radix-ui/themes'
 import React from 'react'
-import Rating from './Rating'
-import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
+import { ClipLoader } from 'react-spinners'
 import { useUserSkillsByCategory } from '../api/skills/queries'
 import ErrorMessage from './ErrorMessage'
-import { ClipLoader } from 'react-spinners'
 import SkillsCard from './SkillsCard'
 
 function OverviewTab({ userId, name, loadingProfile }) {

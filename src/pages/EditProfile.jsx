@@ -2,7 +2,7 @@ import { InfoCircledIcon } from '@radix-ui/react-icons';
 import { Avatar, Button, Separator, Text, TextArea, TextField } from '@radix-ui/themes';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 import { LuSave } from "react-icons/lu";
 import { useUpdateProfile } from '../api/developers/mutations';
 import { useAuth } from '../context/authContext';
@@ -36,10 +36,13 @@ function EditProfile() {
     mutate(data, {
       onSuccess: () => {
         const updatedUser = { ...user, ...data };
-        console.log(data)
         setUser(updatedUser);
         localStorage.setItem('dev-user', JSON.stringify(updatedUser));
-        toast.success("Profile updated successfully")
+        toast.success("Profile updated.");
+      },
+      onError: (error) => {
+        const message = error?.response?.data?.message || "Update failed. Please try again.";
+        toast.error(message);
       },
     })
   }

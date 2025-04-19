@@ -104,7 +104,7 @@ function DeveloperProfile() {
               </div>}
               {!isLoading && (
                 bio ? (
-                  <Text as='p' className='text-sm'>
+                  <Text as='p' className='text-sm whitespace-pre-wrap'>
                     {bio}
                   </Text>
                 ) : (

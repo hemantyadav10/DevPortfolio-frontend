@@ -20,11 +20,11 @@ import Dashboard from './pages/Dashboard.jsx'
 import Overview from './pages/Overview.jsx'
 import Skills from './pages/Skills.jsx'
 import Endorsements from './pages/Endorsements.jsx'
-import { Toaster } from 'react-hot-toast'
 import Settings from './pages/Settings.jsx'
 import ThemeSetting from './pages/ThemeSetting.jsx'
 import AccountSettings from './pages/AccountSettings.jsx'
 import { ThemeProvider } from 'next-themes'
+import { Toaster } from 'sonner'
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -76,9 +76,7 @@ createRoot(document.getElementById('root')).render(
         >
           <Theme accentColor='blue' >
             <RouterProvider router={router} />
-            <Toaster
-              position='bottom-right'
-            />
+            <Toaster richColors/>
             <ReactQueryDevtools initialIsOpen={true} />
           </Theme>
         </ThemeProvider>
