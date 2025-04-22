@@ -9,7 +9,7 @@ export const useSocket = () => useContext(SocketContext);
 const getSocket = () => {
   const token = localStorage.getItem("token");
 
-  return io('http://localhost:5000', {
+  return io(import.meta.env.VITE_API_BASE_URL, {
     withCredentials: true,
     auth: { token },
   });

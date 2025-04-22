@@ -4,7 +4,7 @@ import {toast} from "sonner";
 import { getAuthSetters } from "../context/authController";
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/v1`,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
