@@ -1,5 +1,5 @@
 import { BellIcon, DotsHorizontalIcon, InfoCircledIcon } from '@radix-ui/react-icons'
-import { Avatar, Button, DropdownMenu, Flex, IconButton, Inset, Popover, ScrollArea, Skeleton, Text, Tooltip } from '@radix-ui/themes'
+import { Avatar, Button, Dialog, DropdownMenu, Flex, IconButton, Inset, Popover, ScrollArea, Skeleton, Text, Tooltip } from '@radix-ui/themes'
 import { formatDistanceToNow } from 'date-fns'
 import React, { useEffect, useState } from 'react'
 import { CiBellOff } from "react-icons/ci"
@@ -13,6 +13,7 @@ import { notificationKeys } from '../api/notifications/notifications.keys'
 import { useQueryClient } from '@tanstack/react-query'
 import { statsKeys } from '../api/stats/queryKeys'
 import { useSocket } from '../context/socketContext'
+import { useMediaQuery } from '../hooks/use-media-query'
 
 
 function Notifications() {
@@ -44,6 +45,8 @@ function Notifications() {
   const { mutate: deleteAll, isPending: deletingAll } = useDeleteAllNotifications(filters);
   const { mutate: markAllAsRead, isPending: markingAll } = useMarkAllAsRead(filters);
   const queryClient = useQueryClient()
+
+  const isDesktop = useMediaQuery("(min-width: 640px)")
 
   useEffect(() => {
     if (!socket) return;
@@ -106,159 +109,91 @@ function Notifications() {
     isLoading ? (
       <Skeleton className='w-8 h-8 rounded-full' />
     ) : (
-      <Popover.Root open={fetchNotifications} onOpenChange={setFetchNotifications}>
-        <Popover.Trigger className='relative'>
-          <div className='relative rounded-full'>
-            <Tooltip content='Notifications' delayDuration={0}>
-              <IconButton
-                variant='outline'
-              >
-                <BellIcon color='white' height={16} width={16} />
-              </IconButton>
-            </Tooltip>
-            {/* Notification count badge */}
-            {count > 0 && <span className='absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-medium rounded-full h-4 w-4 flex items-center justify-center shadow-md tabular-nums'>
-              {count}
-            </span>}
-          </div>
-        </Popover.Trigger>
-        <Popover.Content align='end' className='w-screen max-w-96'>
+      isDesktop ? (
+        <Popover.Root open={fetchNotifications} onOpenChange={setFetchNotifications}>
+          <Popover.Trigger className='relative'>
+            <div className='relative rounded-full'>
+              <NotificationTrigger count={count} />
+            </div>
+          </Popover.Trigger>
+          <Popover.Content align='end' className='w-screen max-w-96'>
+            <NotificationHeader
+              deleteAll={deleteAll}
+              deleteRead={deleteRead}
+              deletingAll={deletingAll}
+              deletingRead={deletingRead}
+              isFetching={isFetching}
+              read={read}
+              setRead={setRead}
+            />
+            <NotificationList
+              notifications={notifications}
+              isPending={isPending}
+              isError={isError}
+              error={error}
+              refetch={refetch}
+              hasNotifications={hasNotifications}
+              isFetchingNextPage={isFetchingNextPage}
+              hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
+              filters={filters}
+              setFetchNotifications={setFetchNotifications}
+            />
+            <NotificationFooter
+              markAllAsRead={markAllAsRead}
+              markingAll={markingAll}
+            />
+          </Popover.Content>
+        </Popover.Root >
 
-          <Inset mb={'4'} className='border-b border-[--gray-a6] bg-[--gray-a2] px-4 py-2'>
-            <Flex align={'center'} justify={'between'}>
-              <Text as='p' weight={'medium'} className='flex items-center gap-2' size={'5'}>
-                Notifications
-                <Popover.Root>
-                  <Popover.Trigger>
-                    <IconButton
-                      size={'2'}
-                      radius='full'
-                      color='gray'
-                      variant='ghost'
-                    >
-                      <InfoCircledIcon />
-                    </IconButton>
-                  </Popover.Trigger>
-                  <Popover.Content align='start'>
-                    <Inset p={'0'}>
-                      <Text size='1' align='center' className='px-4'>
-                        Notifications are stored for 3 days
-                      </Text>
-                    </Inset>
-                  </Popover.Content>
-                </Popover.Root>
-              </Text>
-              <DropdownMenu.Root >
-                <DropdownMenu.Trigger>
-                  <IconButton
-                    variant='ghost'
-                    highContrast
-                    color='gray'
-                  >
-                    <DotsHorizontalIcon height={18} width={18} />
-                  </IconButton>
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Content className='w-36' variant='soft'>
-                  <DropdownMenu.Label>
-                    Actions
-                  </DropdownMenu.Label>
-                  <DropdownMenu.Item disabled={deletingRead} onClick={deleteRead}>
-                    Clear read
-                  </DropdownMenu.Item>
-                  <DropdownMenu.Item disabled={deletingAll} onClick={deleteAll}>
-                    Clear all
-                  </DropdownMenu.Item>
-                </DropdownMenu.Content>
-              </DropdownMenu.Root>
-            </Flex>
-            <Flex gap={'2'} mt={'1'}>
-              <Button
-                disabled={isFetching}
-                variant={read !== undefined && "soft"}
-                size={'1'}
-                onClick={() => setRead(undefined)}
-              >
-                All
-              </Button>
-              <Button
-                disabled={isFetching}
-                onClick={() => {
-                  setRead(false)
-                }}
-                variant={read === undefined && "soft"}
-                size={'1'}
-              >
-                Unread
-              </Button>
-            </Flex>
-          </Inset>
-          <Inset my={'4'}>
-            <ScrollArea type="auto" scrollbars="vertical" style={{ height: 220 }}>
-              <Flex className='h-full px-4 pb-2' direction={'column'} >
-                {isPending ? (
-                  <div className='mt-4 text-center '>
-                    <ClipLoader className='mx-auto' color='var(--accent-12)' />
-                  </div>
-                ) : isError ? (
-                  <ErrorMessage className='mt-4' error={error} onRetry={refetch} />
-                ) : hasNotifications ? (
-                  notifications?.pages.map((page) => (
-                    page.docs.map((data) => (
-                      <NotificationCard key={data._id} data={data} setOpen={setFetchNotifications} filters={filters} />
-                    ))))
-                ) : (
-                  <div className='flex flex-col items-center justify-center flex-1 gap-1'>
-                    <CiBellOff size={100} color='var(--gray-a9)' />
-                    <Text as='p' className='font-medium' align={'center'} color='gray' >
-                      You're all caught up! <br />
-                    </Text>
-                    <Text as='p' className='text-xs' align={'center'} color='gray' >
-                      No new notifications for now.
-                    </Text>
-                  </div>
-                )}
-                {isFetchingNextPage && (
-                  <div className='my-2 text-center'>
-                    <ClipLoader size={'24'} className='mx-auto' color='var(--accent-12)' />
-                  </div>
-                )}
-                {hasNextPage && !isFetchingNextPage && (
-                  <div className='text-center'>
-                    <Button
-                      onClick={() => fetchNextPage()}
-                      variant='ghost'
-                      my={'2'}
-                    >
-                      Load more
-                    </Button>
-                  </div>
-                )}
-
-              </Flex>
-            </ScrollArea>
-          </Inset>
-          <Inset mt={'4'} className='border-t  bg-[--gray-a2] border-[--gray-a6]'>
-            <Flex align={'center'} p={'2'} justify={'center'}>
-              <Button
-                variant='ghost'
-                color='gray'
-                highContrast
-                onClick={markAllAsRead}
-                disabled={markingAll}
-              >
-                Mark all as read
-              </Button>
-            </Flex>
-          </Inset>
-        </Popover.Content>
-      </Popover.Root >
+      ) : (
+        <Dialog.Root open={fetchNotifications} onOpenChange={setFetchNotifications}>
+          <Dialog.Trigger>
+            <div className='relative rounded-full'>
+              <NotificationTrigger count={count} />
+            </div>
+          </Dialog.Trigger>
+          <Dialog.Content>
+            <Dialog.Title>
+              <NotificationHeader
+                deleteAll={deleteAll}
+                deleteRead={deleteRead}
+                deletingAll={deletingAll}
+                deletingRead={deletingRead}
+                isFetching={isFetching}
+                read={read}
+                setRead={setRead}
+              />
+            </Dialog.Title>
+            <NotificationList
+              notifications={notifications}
+              isPending={isPending}
+              isError={isError}
+              error={error}
+              refetch={refetch}
+              hasNotifications={hasNotifications}
+              isFetchingNextPage={isFetchingNextPage}
+              hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
+              filters={filters}
+              setFetchNotifications={setFetchNotifications}
+            />
+            <div className='mt-2'>
+              <NotificationFooter
+                markAllAsRead={markAllAsRead}
+                markingAll={markingAll}
+              />
+            </div>
+          </Dialog.Content>
+        </Dialog.Root>
+      )
     )
   )
 }
 
 export default React.memo(Notifications)
 
-function NotificationCard({ data, setOpen, filters }) {
+export function NotificationCard({ data, setOpen, filters }) {
   const { createdAt, isRead, message, sender, url, _id: notificationId } = data ?? {};
   const { name, profilePictureUrl, _id: senderId } = sender ?? {}
   const { mutate: markAsRead } = useMarkAsRead({ id: notificationId, filters });
@@ -298,4 +233,176 @@ function NotificationCard({ data, setOpen, filters }) {
       </div>
     </Link>
   )
+}
+
+export function NotificationHeader({ deleteRead, deleteAll, deletingRead, deletingAll, read, setRead, isFetching }) {
+  return (
+    <Inset mb={'4'} className='border-b border-[--gray-a6] bg-[--gray-a2] px-4 py-2'>
+      <Flex align={'center'} justify={'between'}>
+        <Text as='p' weight={'medium'} className='flex items-center gap-2' size={'5'}>
+          Notifications
+          <Popover.Root>
+            <Popover.Trigger>
+              <IconButton
+                size={'2'}
+                radius='full'
+                color='gray'
+                variant='ghost'
+              >
+                <InfoCircledIcon />
+              </IconButton>
+            </Popover.Trigger>
+            <Popover.Content align='start'>
+              <Inset p={'0'}>
+                <Text size='1' align='center' className='px-4'>
+                  Notifications are stored for 3 days
+                </Text>
+              </Inset>
+            </Popover.Content>
+          </Popover.Root>
+        </Text>
+        <DropdownMenu.Root >
+          <DropdownMenu.Trigger>
+            <IconButton
+              variant='ghost'
+              highContrast
+              color='gray'
+            >
+              <DotsHorizontalIcon height={18} width={18} />
+            </IconButton>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content className='w-36' variant='soft'>
+            <DropdownMenu.Label>
+              Actions
+            </DropdownMenu.Label>
+            <DropdownMenu.Item disabled={deletingRead} onClick={deleteRead}>
+              Clear read
+            </DropdownMenu.Item>
+            <DropdownMenu.Item disabled={deletingAll} onClick={deleteAll}>
+              Clear all
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+      </Flex>
+      <Flex gap={'2'} mt={'1'}>
+        <Button
+          disabled={isFetching}
+          variant={read !== undefined && "soft"}
+          size={'1'}
+          onClick={() => setRead(undefined)}
+        >
+          All
+        </Button>
+        <Button
+          disabled={isFetching}
+          onClick={() => {
+            setRead(false)
+          }}
+          variant={read === undefined && "soft"}
+          size={'1'}
+        >
+          Unread
+        </Button>
+      </Flex>
+    </Inset>
+  )
+}
+
+export function NotificationTrigger({ count }) {
+  return (
+    <>
+      <Tooltip content='Notifications' delayDuration={0}>
+        <IconButton
+          variant='soft'
+        >
+          <BellIcon color='white' height={16} width={16} />
+        </IconButton>
+      </Tooltip>
+      {
+        count > 0 && <span className='absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-medium rounded-full h-4 w-4 flex items-center justify-center shadow-md tabular-nums'>
+          {count}
+        </span>
+      }
+    </>
+  )
+}
+
+export function NotificationList({
+  notifications,
+  isPending,
+  isError,
+  error,
+  refetch,
+  hasNotifications,
+  isFetchingNextPage,
+  hasNextPage,
+  fetchNextPage,
+  filters,
+  setFetchNotifications
+}) {
+  return (
+    <Inset my={'4'}>
+      <ScrollArea type="auto" scrollbars="vertical" style={{ height: 280 }}>
+        <Flex className='h-full px-4 pb-2' direction={'column'} >
+          {isPending ? (
+            <div className='mt-4 text-center '>
+              <ClipLoader className='mx-auto' color='var(--accent-12)' />
+            </div>
+          ) : isError ? (
+            <ErrorMessage className='mt-4' error={error} onRetry={refetch} />
+          ) : hasNotifications ? (
+            notifications?.pages.map((page) => (
+              page.docs.map((data) => (
+                <NotificationCard key={data._id} data={data} setOpen={setFetchNotifications} filters={filters} />
+              ))))
+          ) : (
+            <div className='flex flex-col items-center justify-center flex-1 gap-1'>
+              <CiBellOff size={100} color='var(--gray-a9)' />
+              <Text as='p' className='font-medium' align={'center'} color='gray' >
+                You're all caught up! <br />
+              </Text>
+              <Text as='p' className='text-xs' align={'center'} color='gray' >
+                No new notifications for now.
+              </Text>
+            </div>
+          )}
+          {isFetchingNextPage && (
+            <div className='my-2 text-center'>
+              <ClipLoader size={'24'} className='mx-auto' color='var(--accent-12)' />
+            </div>
+          )}
+          {hasNextPage && !isFetchingNextPage && (
+            <div className='text-center'>
+              <Button
+                onClick={() => fetchNextPage()}
+                variant='ghost'
+                my={'2'}
+              >
+                Load more
+              </Button>
+            </div>
+          )}
+
+        </Flex>
+      </ScrollArea>
+    </Inset>
+  )
+}
+
+export function NotificationFooter({ markAllAsRead, markingAll }) {
+  return (
+    <Inset mt={'4'} className='border-t  bg-[--gray-a2] border-[--gray-a6]'>
+      <Flex align={'center'} p={'2'} justify={'center'}>
+        <Button
+          variant='ghost'
+          color='gray'
+          highContrast
+          onClick={markAllAsRead}
+          disabled={markingAll}
+        >
+          Mark all as read
+        </Button>
+      </Flex>
+    </Inset>
+  );
 }

@@ -51,10 +51,10 @@ function SkillsCard({
   return (
     <div className='flex flex-wrap items-center justify-between col-span-1 px-4 py-2 border rounded-md gap-x-4 gap-y-2 border-[--gray-a6]'>
       <div>
-        <Text as='p' className='font-medium capitalize '>
+        <Text as='p' size={'2'} className='font-medium capitalize '>
           {name}
         </Text>
-        <Text as='p' color='gray' size={'2'}>
+        <Text as='p' color='gray' size={'1'}>
           {yearsExperience} years of experience
         </Text>
       </div>

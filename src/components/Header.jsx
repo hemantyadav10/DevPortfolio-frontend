@@ -29,7 +29,20 @@ function Header() {
         className={`h-16 flex items-center justify-between p-6 md:px-12 bg-[--primary] sticky top-0 z-50 ${hasShadow ? 'shadow-xl' : ''
           } `}
       >
-        <Logo />
+        <div className='flex items-center gap-2'>
+          <IconButton
+            variant='soft'
+            onClick={() => setOpen(!open)}
+            className='flex md:hidden'
+          >
+            {open ? (
+              <Cross1Icon color='white' height={18} width={18} />
+            ) : (
+              <HamburgerMenuIcon color='white' height={18} width={18} />
+            )}
+          </IconButton>
+          <Logo />
+        </div>
         <div className='items-center hidden gap-6 font-medium md:flex'>
           <NavLink
             to={'/'}
@@ -59,16 +72,6 @@ function Header() {
           <div className='flex items-center gap-2 md:hidden'>
             <ToggleTheme />
             {isAuthenticated && <Dropdowm />}
-            <IconButton
-              variant='outline'
-              onClick={() => setOpen(!open)}
-            >
-              {open ? (
-                <Cross1Icon color='white' height={18} width={18} />
-              ) : (
-                <HamburgerMenuIcon color='white' height={18} width={18} />
-              )}
-            </IconButton>
           </div>
         </div>
       </div >
@@ -77,12 +80,14 @@ function Header() {
           <div className='flex flex-col'>
             <NavLink
               to={'/'}
+              onClick={() => setOpen(false)}
               className={({ isActive }) => `${isActive ? "text-[--text] bg-[--accent-a4] " : "text-[--text-muted] hover:bg-[--accent-a3]"} px-6 py-2 rounded-md`}
             >
               Home
             </NavLink>
             <NavLink
               to={'/developers'}
+              onClick={() => setOpen(false)}
               className={({ isActive }) => `${isActive ? "text-[--text] bg-[--accent-a4] " : "text-[--text-muted] hover:bg-[--accent-a3]"} px-6 py-2 rounded-md`}
             >
               Developers
@@ -145,6 +150,7 @@ function Dropdowm() {
             <GearIcon /> Settings
           </Link>
         </DropdownMenu.Item>
+        <DropdownMenu.Separator />
         <DropdownMenu.Item disabled={isLoading} onClick={logout}>
           <ExitIcon /> {isLoading ? "Logging out..." : "Log out"}
         </DropdownMenu.Item>
@@ -158,7 +164,7 @@ function ToggleTheme() {
 
   return (
     <IconButton
-      variant='outline'
+      variant='soft'
       onClick={() => {
         setTheme(resolvedTheme === 'light' ? "dark" : "light")
       }}
