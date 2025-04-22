@@ -25,6 +25,7 @@ import ThemeSetting from './pages/ThemeSetting.jsx'
 import AccountSettings from './pages/AccountSettings.jsx'
 import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
+import SocketProvider from './context/socketContext'
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -69,17 +70,19 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ThemeProvider
-          attribute={'class'}
-          disableTransitionOnChange
-          defaultTheme='light'
-        >
-          <Theme accentColor='blue' >
-            <RouterProvider router={router} />
-            <Toaster richColors/>
-            <ReactQueryDevtools initialIsOpen={true} />
-          </Theme>
-        </ThemeProvider>
+        <SocketProvider>
+          <ThemeProvider
+            attribute={'class'}
+            disableTransitionOnChange
+            defaultTheme='light'
+          >
+            <Theme accentColor='blue' >
+              <RouterProvider router={router} />
+              <Toaster richColors />
+              <ReactQueryDevtools initialIsOpen={true} />
+            </Theme>
+          </ThemeProvider>
+        </SocketProvider>
       </AuthProvider>
     </QueryClientProvider>
   </StrictMode>,

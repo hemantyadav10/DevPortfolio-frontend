@@ -33,8 +33,8 @@ function OverviewTab({ userId, name, loadingProfile }) {
         ) : isError ? (
           <ErrorMessage error={error} onRetry={refetch} />
         ) : hasSkills ? (
-          data.map(({ category, skills, _id }) => (
-            <div key={_id}>
+          data.map(({ category, skills, _id }, idx) => (
+            <div key={idx}>
               <Text as='p' className='p-2 text-lg font-medium bg-[--gray-a3] rounded-md capitalize'>
                 {category}
               </Text>

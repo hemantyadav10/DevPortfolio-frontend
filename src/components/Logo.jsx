@@ -8,7 +8,7 @@ function Logo({
 }) {
   return (
     <Link to={'/'} className={`flex items-end gap-2 ${className}`} style={{ color }}>
-      <MdCode size={28} />
+      <MdCode size={28} className="hidden sm:block"/>
       <Text
         as="span"
         size={'5'}

@@ -1,11 +1,12 @@
-import { Cross1Icon, DashboardIcon, ExitIcon, GearIcon, HamburgerMenuIcon, MoonIcon, PersonIcon, SunIcon } from '@radix-ui/react-icons'
-import { Avatar, DropdownMenu, Flex, IconButton, Text } from '@radix-ui/themes'
+import { BellIcon, Cross1Icon, DashboardIcon, ExitIcon, GearIcon, HamburgerMenuIcon, MoonIcon, PersonIcon, SunIcon } from '@radix-ui/react-icons'
+import { Avatar, Button, DropdownMenu, Flex, IconButton, Text } from '@radix-ui/themes'
 import React, { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router'
 import LoginButton from './LoginButton'
 import Logo from './Logo'
 import { useAuth } from '../context/authContext'
 import { useTheme } from 'next-themes'
+import Notifications from './Notifications'
 
 function Header() {
   const [hasShadow, setHasShadow] = useState(false)
@@ -43,31 +44,32 @@ function Header() {
             Developers
           </NavLink>
         </div>
-        <div className='items-center hidden gap-2 md:flex'>
-          <ToggleTheme />
-          {isAuthenticated ? (
-            <Dropdowm />
-          ) : (
-            <LoginButton
-              xs='3'
-            />
-          )}
-        </div>
-        <div className='flex items-center gap-4 md:hidden'>
-          <ToggleTheme />
-          {isAuthenticated && <Dropdowm />}
-          <IconButton
-            variant='ghost'
-            highContrast
-            size={'3'}
-            onClick={() => setOpen(!open)}
-          >
-            {open ? (
-              <Cross1Icon color='white' height={20} width={20} />
+        <div className='flex items-center gap-2'>
+          {isAuthenticated && <Notifications />}
+          <div className='items-center hidden gap-2 md:flex'>
+            <ToggleTheme />
+            {isAuthenticated ? (
+              <Dropdowm />
             ) : (
-              <HamburgerMenuIcon color='white' height={20} width={20} />
+              <LoginButton
+                xs='2'
+              />
             )}
-          </IconButton>
+          </div>
+          <div className='flex items-center gap-2 md:hidden'>
+            <ToggleTheme />
+            {isAuthenticated && <Dropdowm />}
+            <IconButton
+              variant='outline'
+              onClick={() => setOpen(!open)}
+            >
+              {open ? (
+                <Cross1Icon color='white' height={18} width={18} />
+              ) : (
+                <HamburgerMenuIcon color='white' height={18} width={18} />
+              )}
+            </IconButton>
+          </div>
         </div>
       </div >
       {open && (
@@ -87,7 +89,7 @@ function Header() {
             </NavLink>
             {!isAuthenticated && (
               <div className='flex mt-8'>
-                <LoginButton className='flex-1' xs = "3"/>
+                <LoginButton className='flex-1' xs="3" />
               </div>
             )}
           </div>
@@ -111,7 +113,7 @@ function Dropdowm() {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <IconButton size={'3'} radius='full' variant='soft'>
+        <IconButton radius='full' variant='soft'>
           <Avatar
             src={user?.profilePictureUrl}
             fallback={user?.name?.charAt(0)?.toUpperCase()}
@@ -156,15 +158,12 @@ function ToggleTheme() {
 
   return (
     <IconButton
-      variant='ghost'
+      variant='outline'
       onClick={() => {
         setTheme(resolvedTheme === 'light' ? "dark" : "light")
       }}
-      mx={'1'}
-      size={'3'}
-      highContrast
     >
-      {resolvedTheme === 'light' ? <MoonIcon color='white' height={'18'} width={'18'}/> : <SunIcon color='white' height={'18'} width={'18'}/>}
+      {resolvedTheme === 'light' ? <MoonIcon color='white' height={'18'} width={'18'} /> : <SunIcon color='white' height={'18'} width={'18'} />}
     </IconButton>
   )
 }

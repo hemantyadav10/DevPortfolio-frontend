@@ -81,7 +81,7 @@ function SkillsTab({ userId }) {
       )}
       {isFetchingNextPage && (
         <div className='text-center'>
-          <ClipLoader size={'22'} className='mx-auto' color='var(--accent-12)' />
+          <ClipLoader size={'22px'} className='mx-auto' color='var(--accent-12)' />
         </div>
       )}
       {hasNextPage && !isFetchingNextPage && (
@@ -147,7 +147,7 @@ function SkillsCard({
   }
 
   return (
-    <div className='md:p-6 p-4 space-y-4 border border-t-8 border-t-[--primary] rounded-lg border-[--gray-a6] bg-[--color-panel-solid]'>
+    <div id={skillId} className='md:p-6 p-4 space-y-4 border border-t-8 border-t-[--primary] rounded-lg border-[--gray-a6] bg-[--color-panel-solid]'>
       <div className='flex flex-wrap items-center justify-between gap-2'>
         <div>
           <Text as='p' className='flex items-center text-xl font-semibold capitalize gap-x-4'>
@@ -212,7 +212,7 @@ function SkillsCard({
       <div className='space-y-2'>
         {isLoading ? (
           <div className='text-center'>
-            <ClipLoader size={'22'} className='mx-auto' color='var(--accent-12)' />
+            <ClipLoader size={'22px'} className='mx-auto' color='var(--accent-12)' />
           </div>
         ) : isError ? (
           <ErrorMessage error={error} onRetry={refetch} />
