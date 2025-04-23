@@ -4,8 +4,10 @@ import { ClipLoader } from 'react-spinners'
 import { useUserSkillsByCategory } from '../api/skills/queries'
 import ErrorMessage from './ErrorMessage'
 import SkillsCard from './SkillsCard'
+import { useOutletContext } from 'react-router'
 
-function OverviewTab({ userId, name, loadingProfile }) {
+function OverviewTab() {
+  const {userId, name, loadingProfile} = useOutletContext();
   const {
     data,
     isLoading,

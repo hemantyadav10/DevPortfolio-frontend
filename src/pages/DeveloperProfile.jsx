@@ -1,15 +1,13 @@
 import { ArrowLeftIcon, EnvelopeClosedIcon, ExternalLinkIcon, GitHubLogoIcon, GlobeIcon, LinkedInLogoIcon, Pencil2Icon, TwitterLogoIcon } from '@radix-ui/react-icons'
 import { Avatar, Button, Skeleton, Text } from '@radix-ui/themes'
-import React, { useState } from 'react'
-import { Link, useParams } from 'react-router'
+import React from 'react'
+import { Link, NavLink, Outlet, useLocation, useParams } from 'react-router'
 import { useDeveloperProfile } from '../api/developers/queries'
-import OverviewTab from '../components/OverviewTab'
-import SkillsTab from '../components/SkillsTab'
 import ErrorMessage from '../components/ErrorMessage'
 import { useAuth } from '../context/authContext'
 
 function DeveloperProfile() {
-  const [isOverviewTab, setIsOverviewTab] = useState(true)
+  const { pathname } = useLocation()
   const { userId } = useParams()
   const { data: developer, isLoading, isError, error, refetch } = useDeveloperProfile(userId);
   const { user, isAuthenticated } = useAuth()
@@ -213,22 +211,23 @@ function DeveloperProfile() {
         </section>
         <section className='lg:flex-1'>
           <div className='relative flex text-sm bg-[--gray-3] border-4 border-[--gray-3] rounded-md w-max font-medium '>
-            <div className={`absolute w-1/2 bg-[--color-background] rounded top-0 h-full ${isOverviewTab ? "" : "translate-x-full"} transition-transform duration-300 shadow`} />
-            <button
-              className={` bg-transparent z-10 p-1 py-[6px] ${isOverviewTab ? "" : "opacity-70"} transition-opacity duration-300 w-24`}
-              onClick={() => setIsOverviewTab(true)}
+            <NavLink
+              to={`overview`}
+              preventScrollReset
+              className={({ isActive }) => `z-10 p-1 py-[6px] ${(isActive || pathname === `/profile/${userId}`) ? "bg-[--color-background] shadow" : "opacity-70"} w-24 text-center rounded `}
             >
               Overview
-            </button>
-            <button
-              className={`bg-transparent z-10 p-1 py-[6px] ${isOverviewTab ? "opacity-70" : ""} transition-opacity duration-300 w-24`}
-              onClick={() => setIsOverviewTab(false)}
+            </NavLink>
+            <NavLink
+              to={`skills`}
+              preventScrollReset
+              className={({ isActive }) => `z-10 p-1 py-[6px] ${isActive ? "bg-[--color-background] shadow" : "opacity-70"} w-24 text-center rounded `}
             >
               Skills
-            </button>
+            </NavLink>
           </div>
           <div className='py-6'>
-            {isOverviewTab ? <OverviewTab userId={userId} name={name} loadingProfile={isLoading} /> : <SkillsTab userId={userId} />}
+            <Outlet context={{ userId, name, loadingProfile: isLoading }} />
           </div>
         </section>
       </div>

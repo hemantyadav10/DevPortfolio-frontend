@@ -26,6 +26,8 @@ import AccountSettings from './pages/AccountSettings.jsx'
 import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
 import SocketProvider from './context/socketContext'
+import OverviewTab from './components/OverviewTab.jsx'
+import SkillsTab from './components/SkillsTab.jsx'
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -33,7 +35,11 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index element={<Home />} />
       <Route path="/developers" element={<Developers />} />
-      <Route path="/profile/:userId" element={<DeveloperProfile />} />
+      <Route path="/profile/:userId" element={<DeveloperProfile />} >
+        <Route index element={<OverviewTab />} />
+        <Route path='overview' element={<OverviewTab />} />
+        <Route path='skills' element={<SkillsTab />} />
+      </Route>
       <Route element={<ProtectedRoute />}>
         <Route path='/settings' element={<Settings />}>
           <Route index element={<EditProfile />} />

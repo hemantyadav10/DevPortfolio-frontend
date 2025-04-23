@@ -1,7 +1,7 @@
 import { BarChartIcon, ExternalLinkIcon, GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons'
 import { Avatar, Badge, Button, IconButton, Link, Popover, Skeleton, Text } from '@radix-ui/themes'
 import React from 'react'
-import { NavLink } from 'react-router'
+import { NavLink, useOutletContext } from 'react-router'
 import { ClipLoader } from 'react-spinners'
 import { useToggleEndorsement } from '../api/endorsements/mutations.js'
 import { useSkillEndorsements } from '../api/endorsements/queries.js'
@@ -12,7 +12,8 @@ import ErrorMessage from './ErrorMessage.jsx'
 import Rating from './Rating.jsx'
 import { toast } from 'sonner'
 
-function SkillsTab({ userId }) {
+function SkillsTab() {
+  const { userId } = useOutletContext();
   const { user } = useAuth()
   const skillLimit = 10;
   const {
