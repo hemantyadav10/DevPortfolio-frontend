@@ -14,6 +14,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import { statsKeys } from '../api/stats/queryKeys'
 import { useSocket } from '../context/socketContext'
 import { useMediaQuery } from '../hooks/use-media-query'
+import { endorsementQueryKeys } from '../api/endorsements/queryKey'
+import { skillQueryKeys } from '../api/skills/queryKey'
 
 
 function Notifications() {
@@ -83,14 +85,27 @@ function Notifications() {
         });
 
         // Invalidate to ensure background revalidation of notifications and stats
-        queryClient.invalidateQueries({ queryKey: notificationKeys.all });
-        queryClient.invalidateQueries({ queryKey: statsKeys.all });
+        Promise.all([
+          queryClient.invalidateQueries({ queryKey: notificationKeys.all }),
+          queryClient.invalidateQueries({ queryKey: statsKeys.all }),
+          queryClient.invalidateQueries({ queryKey: endorsementQueryKeys.bySkillId(data?.skillId) }),
+          queryClient.invalidateQueries({ queryKey: endorsementQueryKeys.recent({ userId: data?.recipient }) }),
+          queryClient.invalidateQueries({ queryKey: skillQueryKeys.byUserAndCategory(data?.recipient) }),
+          queryClient.invalidateQueries({ queryKey: skillQueryKeys.paginatedByUserBase(data?.recipient) }),
+          queryClient.invalidateQueries({ queryKey: ["dashboard"] }),
+        ]);
       }
     };
 
     // Handle real-time endorsement removal to keep platform stats updated
     const remove_endorsement = (data) => {
-      queryClient.invalidateQueries({ queryKey: statsKeys.all });
+      Promise.all([
+        queryClient.invalidateQueries({ queryKey: statsKeys.all }),
+        queryClient.invalidateQueries({ queryKey: endorsementQueryKeys.bySkillId(data?.skillId) }),
+        queryClient.invalidateQueries({ queryKey: skillQueryKeys.byUserAndCategory(data?.recipient) }),
+        queryClient.invalidateQueries({ queryKey: skillQueryKeys.paginatedByUserBase(data?.recipient) }),
+        queryClient.invalidateQueries({ queryKey: ["dashboard"] }),
+      ]);
     };
 
     // Register socket listeners

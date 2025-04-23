@@ -1,12 +1,12 @@
-import React from 'react'
-import { useDashboardStats } from '../api/dashboard/queries'
-import { Text, Skeleton, Card, Button, Avatar } from '@radix-ui/themes'
 import { BarChartIcon, ChevronRightIcon, StarFilledIcon } from '@radix-ui/react-icons'
+import { Avatar, Button, Skeleton, Text } from '@radix-ui/themes'
+import React from 'react'
 import { BiBadgeCheck } from 'react-icons/bi'
 import { Link } from 'react-router'
 import { ClipLoader } from 'react-spinners'
-import ErrorMessage from '../components/ErrorMessage'
+import { useDashboardStats } from '../api/dashboard/queries'
 import { useRecentEndorsements } from '../api/endorsements/queries'
+import ErrorMessage from '../components/ErrorMessage'
 import { useAuth } from '../context/authContext'
 
 function Overview() {
@@ -21,7 +21,7 @@ function Overview() {
     isError,
     error,
     refetch,
-    isFetching
+    isPending
   } = useRecentEndorsements({ userId: user?._id })
 
   const stats = [
@@ -59,7 +59,7 @@ function Overview() {
           Latest skill endorsements from other developers
         </Text>
 
-        {isFetching ? (
+        {isPending ? (
           <div className='py-6 text-center'>
             <ClipLoader className='mx-auto' color='var(--accent-12)' />
           </div>
@@ -103,7 +103,7 @@ function Overview() {
         )}
 
         <div>
-          <Skeleton loading={isFetching}>
+          <Skeleton loading={isPending}>
             <Button variant="ghost" asChild color='gray' highContrast mt={'6'} className='font-medium'>
               <Link to={'/dashboard/endorsements'}>
                 View all endorsements <ChevronRightIcon className="w-4 h-4" />

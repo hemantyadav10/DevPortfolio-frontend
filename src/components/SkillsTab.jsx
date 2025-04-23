@@ -1,8 +1,9 @@
-import { BarChartIcon, ExternalLinkIcon, GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons'
+import { BarChartIcon, ChevronDownIcon, ChevronUpIcon, ExternalLinkIcon, GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons'
 import { Avatar, Badge, Button, IconButton, Link, Popover, Skeleton, Text } from '@radix-ui/themes'
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink, useOutletContext } from 'react-router'
 import { ClipLoader } from 'react-spinners'
+import { toast } from 'sonner'
 import { useToggleEndorsement } from '../api/endorsements/mutations.js'
 import { useSkillEndorsements } from '../api/endorsements/queries.js'
 import { usePaginatedUserSkills } from '../api/skills/queries.js'
@@ -10,7 +11,6 @@ import { useAuth } from '../context/authContext.jsx'
 import AddNewSkillButton from './AddNewSkillButton.jsx'
 import ErrorMessage from './ErrorMessage.jsx'
 import Rating from './Rating.jsx'
-import { toast } from 'sonner'
 
 function SkillsTab() {
   const { userId } = useOutletContext();
@@ -47,7 +47,8 @@ function SkillsTab() {
             verified,
             yearsExperience,
             _id,
-            isEndorsedByMe
+            isEndorsedByMe,
+            totalEndorsements
           }) => (
             <SkillsCard
               key={_id}
@@ -62,6 +63,7 @@ function SkillsTab() {
               userId={userId}
               isEndorsedByMe={isEndorsedByMe}
               skillLimit={skillLimit}
+              totalEndorsements={totalEndorsements}
             />
           ))
         ))
@@ -115,9 +117,11 @@ function SkillsCard({
   skillId,
   userId,
   isEndorsedByMe,
-  skillLimit
+  skillLimit,
+  totalEndorsements
 }) {
   const limit = 5;
+  const [showEndorsementList, setShowEndorsementList] = useState(false)
   const {
     data,
     isLoading,
@@ -127,9 +131,8 @@ function SkillsCard({
     isError,
     error,
     refetch
-  } = useSkillEndorsements({ skillId, limit })
+  } = useSkillEndorsements({ skillId, limit }, showEndorsementList)
   const hasData = !!data?.pages[0]?.totalDocs ?? false;
-  const totalEndorsements = data?.pages[0]?.totalDocs
   const { isAuthenticated, user } = useAuth()
 
   const { mutate: toggle, isPending } = useToggleEndorsement({ skillId, limit, userId, isEndorsedByMe, currentUser: user, skillLimit });
@@ -147,8 +150,9 @@ function SkillsCard({
     })
   }
 
+
   return (
-    <div id={skillId} className='md:p-6 p-4 space-y-4 border border-t-8 border-t-[--primary] rounded-lg border-[--gray-a6] bg-[--color-panel-solid]'>
+    <div id={skillId} className='scroll-mt-20 md:p-6 p-4 space-y-4 border border-t-8 border-t-[--primary] rounded-lg border-[--gray-a6] bg-[--color-panel-solid] '>
       <div className='flex flex-wrap items-center justify-between gap-2'>
         <div>
           <Text as='p' className='flex items-center text-xl font-semibold capitalize gap-x-4'>
@@ -189,13 +193,17 @@ function SkillsCard({
         <GitHubLogoIcon /> <Link size={'2'} highContrast weight={'medium'} href={projectUrl} rel="noopener noreferrer" target='_blank' className='no-underline hover:underline'>View Project</Link> <ExternalLinkIcon />
       </Text>}
       <div className='flex items-center justify-between'>
-
-        <Text as='p' className='text-sm font-medium'>
-          <Skeleton loading={isLoading}>
-            Endorsements ({totalEndorsements})
-          </Skeleton>
-        </Text>
-
+        <Button
+          variant='ghost'
+          size={'2'}
+          onClick={() => setShowEndorsementList(!showEndorsementList)}
+          color='gray'
+          highContrast
+          className='font-medium'
+        >
+          Endorsements ({totalEndorsements})
+          {showEndorsementList ? <ChevronUpIcon height={'18'} width={'18'} /> : <ChevronDownIcon height={'18'} width={'18'} />}
+        </Button>
         {isAuthenticated && (user?._id !== userId) && (
           <Skeleton loading={isLoading}>
             <Button
@@ -210,7 +218,7 @@ function SkillsCard({
           </Skeleton>
         )}
       </div >
-      <div className='space-y-2'>
+      {showEndorsementList && <div className='space-y-2'>
         {isLoading ? (
           <div className='text-center'>
             <ClipLoader size={'22px'} className='mx-auto' color='var(--accent-12)' />
@@ -255,7 +263,7 @@ function SkillsCard({
             Show more
           </Button>
         )}
-      </div>
+      </div>}
     </div >
   )
 }

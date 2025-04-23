@@ -1,12 +1,13 @@
-import { Avatar, Badge, Button, Skeleton, Text } from '@radix-ui/themes'
-import React from 'react'
-import { useAuth } from '../context/authContext'
-import { usePaginatedUserSkills } from '../api/skills/queries'
+import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons'
+import { Avatar, Badge, Button, Text } from '@radix-ui/themes'
+import React, { useState } from 'react'
+import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
+import { Link } from 'react-router'
 import { ClipLoader } from 'react-spinners'
 import { useSkillEndorsements } from '../api/endorsements/queries'
-import { IoMdCheckmarkCircleOutline } from 'react-icons/io'
+import { usePaginatedUserSkills } from '../api/skills/queries'
 import ErrorMessage from '../components/ErrorMessage'
-import { Link } from 'react-router'
+import { useAuth } from '../context/authContext'
 
 function Endorsements() {
   const { user } = useAuth()
@@ -49,7 +50,8 @@ function Endorsements() {
               verified,
               yearsExperience,
               _id,
-              isEndorsedByMe
+              isEndorsedByMe,
+              totalEndorsements
             }) => (
               <SkillsCard
                 key={_id}
@@ -63,6 +65,7 @@ function Endorsements() {
                 yearsExperience={yearsExperience}
                 userId={user?._id}
                 isEndorsedByMe={isEndorsedByMe}
+                totalEndorsements={totalEndorsements}
               />
             ))
           ))
@@ -106,8 +109,10 @@ function SkillsCard({
   yearsExperience,
   skillId,
   userId,
-  isEndorsedByMe
+  isEndorsedByMe,
+  totalEndorsements
 }) {
+  const [showEndorsementList, setShowEndorsementList] = useState(false)
   const {
     data,
     isLoading,
@@ -117,9 +122,8 @@ function SkillsCard({
     isError,
     error,
     refetch
-  } = useSkillEndorsements({ skillId, limit: 5 })
+  } = useSkillEndorsements({ skillId, limit: 5 }, showEndorsementList)
   const hasData = !!data?.pages[0]?.totalDocs ?? false;
-  const totalEndorsements = data?.pages[0]?.totalDocs
   const { isAuthenticated, user } = useAuth()
 
   return (
@@ -128,60 +132,69 @@ function SkillsCard({
         <Text as='p' className='flex items-center gap-4 font-medium capitalize'>
           {name} {verified && <Badge variant='surface' color="green">verified</Badge>}
         </Text>
-        <Skeleton loading={isLoading}>
-          <div className='flex items-center gap-1 text-sm'>
-            <IoMdCheckmarkCircleOutline className='text-green-500 size-4' /> {totalEndorsements} endorsements
+        <Button
+          variant='ghost'
+          size={'1'}
+          onClick={() => setShowEndorsementList(!showEndorsementList)}
+          color='gray'
+          highContrast
+        >
+          <IoMdCheckmarkCircleOutline className='text-green-500 size-4' /> {totalEndorsements} endorsements
+          {showEndorsementList ? <ChevronUpIcon height={'18'} width={'18'} /> : <ChevronDownIcon height={'18'} width={'18'} />}
+        </Button>
+      </div>
+      {showEndorsementList && (
+        <>
+          <div className='grid grid-cols-1 gap-3 md:grid-cols-2'>
+            {isLoading ? (
+              <div className='col-span-1 text-center md:col-span-3'>
+                <ClipLoader className='mx-auto' size={'28'} color='var(--accent-12)' />
+              </div>
+            ) : isError ? (
+              <ErrorMessage error={error} onRetry={refetch} />
+            ) : hasData ? (
+              data?.pages.map((page, idx) => (
+                page.docs.map(({
+                  createdAt,
+                  endorsedBy: {
+                    name,
+                    profilePictureUrl,
+                    _id: endorsedById
+                  },
+                  _id,
+                }) => (
+                  <DevCard
+                    key={_id}
+                    createdAt={createdAt}
+                    name={name}
+                    profilePictureUrl={profilePictureUrl}
+                    endorsedById={endorsedById}
+                  />
+                ))
+              ))
+            ) : (
+              <Text as='p' className='text-sm' color='gray' weight={'medium'}>
+                No endorsements yet.
+              </Text>
+            )}
           </div>
-        </Skeleton>
-      </div>
-      <div className='grid grid-cols-1 gap-3 md:grid-cols-2'>
-        {isLoading ? (
-          <div className='col-span-1 text-center md:col-span-3'>
-            <ClipLoader className='mx-auto' size={'28'} color='var(--accent-12)' />
+          <div>
+            {isFetchingNextPage && (
+              <ClipLoader className='mx-auto' size={22} color='var(--accent-12)' />
+            )}
+            {hasNextPage && !isFetchingNextPage && (
+              <Button
+                onClick={() => fetchNextPage()}
+                variant='ghost'
+                highContrast
+                className='font-medium'
+              >
+                Show more
+              </Button>
+            )}
           </div>
-        ) : isError ? (
-          <ErrorMessage error={error} onRetry={refetch} />
-        ) : hasData ? (
-          data?.pages.map((page, idx) => (
-            page.docs.map(({
-              createdAt,
-              endorsedBy: {
-                name,
-                profilePictureUrl,
-                _id: endorsedById
-              },
-              _id,
-            }) => (
-              <DevCard
-                key={_id}
-                createdAt={createdAt}
-                name={name}
-                profilePictureUrl={profilePictureUrl}
-                endorsedById={endorsedById}
-              />
-            ))
-          ))
-        ) : (
-          <Text as='p' className='text-sm' color='gray' weight={'medium'}>
-            No endorsements yet.
-          </Text>
-        )}
-      </div>
-      <div>
-        {isFetchingNextPage && (
-          <ClipLoader className='mx-auto' size={22} color='var(--accent-12)' />
-        )}
-        {hasNextPage && !isFetchingNextPage && (
-          <Button
-            onClick={() => fetchNextPage()}
-            variant='ghost'
-            highContrast
-            className='font-medium'
-          >
-            Show more
-          </Button>
-        )}
-      </div>
+        </>
+      )}
     </div>
   )
 }
