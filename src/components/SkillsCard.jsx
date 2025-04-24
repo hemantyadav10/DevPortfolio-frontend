@@ -49,7 +49,7 @@ function SkillsCard({
   };
 
   return (
-    <div className='flex flex-wrap items-center justify-between col-span-1 px-4 py-2 border rounded-md gap-x-4 gap-y-2 border-[--gray-a6]'>
+    <div className='bg-[--color-background] flex flex-wrap items-center justify-between col-span-1 px-4 py-2 border rounded-md gap-x-4 gap-y-2 border-[--gray-a6]'>
       <div>
         <Text as='p' size={'2'} className='font-medium capitalize '>
           {name}
@@ -79,7 +79,7 @@ function SkillsCard({
           <IconButton
             variant="soft"
             highContrast
-            color="red"
+            color="gray"
             className="font-medium"
             onClick={() => setOpenConfirmation(true)}
             disabled={isDeleting}

@@ -1,4 +1,5 @@
 import { Text } from '@radix-ui/themes';
+import { useTheme } from 'next-themes';
 import React from 'react';
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdStarOutline } from "react-icons/md";
@@ -6,7 +7,7 @@ import { MdStarOutline } from "react-icons/md";
 
 function SampleDeveloperCard() {
   return (
-    <div className='relative flex flex-col flex-1 gap-2 p-4 mr-6 bg-[--color-panel-solid] rounded-lg shadow-xl shadow-black/20'>
+    <div className='relative flex flex-col flex-1 gap-2 p-4 mr-6 space-y-2 bg-[--color-panel-solid] rounded-lg shadow-xl shadow-black/20 border border-[--gray-a6]'>
       <div className='flex items-start justify-between'>
         <div className='flex items-start gap-2'>
           <img
@@ -14,8 +15,8 @@ function SampleDeveloperCard() {
             alt=""
             className='object-cover object-center w-10 rounded-full aspect-square'
           />
-          <div>
-            <Text as='p' size={'4'} weight={'medium'}>
+          <div className=''>
+            <Text as='p' size={'4'} className='font-semibold'>
               John Doe
             </Text>
             <Text as='p' color='gray'>
@@ -60,8 +61,9 @@ function Skills({
   skill = 'React',
   endorsements = 0
 }) {
+  const { resolvedTheme } = useTheme()
   return (
-    <div className='flex items-center justify-between p-2 border rounded-md border-[--gray-a6]'>
+    <div className={`flex items-center justify-between p-2 border rounded-md border-[--gray-a6] bg-[--color-background]`}>
       {skill}
       <span className='flex items-center gap-1'>
         {endorsements} <IoMdCheckmarkCircleOutline className='text-green-500' />

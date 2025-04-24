@@ -82,7 +82,7 @@ createRoot(document.getElementById('root')).render(
             disableTransitionOnChange
             defaultTheme='light'
           >
-            <Theme accentColor='blue' >
+            <Theme accentColor='blue' grayColor='slate'>
               <RouterProvider router={router} />
               <Toaster richColors />
               <ReactQueryDevtools initialIsOpen={true} />

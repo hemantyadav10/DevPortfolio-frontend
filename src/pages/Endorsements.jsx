@@ -209,7 +209,7 @@ function DevCard({
   return (
     <Link
       to={`/profile/${endorsedById}`}
-      className='flex gap-2 p-2 border rounded-md items-center border-[--gray-a6]'>
+      className='flex gap-2 p-2 border rounded-md items-center border-[--gray-a6] bg-[--color-background]'>
       <Avatar
         src={profilePictureUrl}
         fallback={name?.charAt(0)?.toUpperCase()}

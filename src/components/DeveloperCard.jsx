@@ -17,7 +17,7 @@ function DeveloperCard({
   return (
     <Link
       to={`/profile/${developer?._id}`}
-      className='w-full p-4 border-t-8 shadow-md rounded-lg border-[--primary] flex flex-col gap-4 hover:shadow-lg transition-shadow h-full bg-[--color-panel-solid]'
+      className='w-full p-4 border-t-8 shadow-md rounded-lg border-t-[--primary] flex flex-col gap-4 hover:shadow-lg transition-shadow h-full bg-[--color-panel-solid] border border-[--gray-a6]'
     >
       <div className='flex items-start gap-2 '>
         <Avatar

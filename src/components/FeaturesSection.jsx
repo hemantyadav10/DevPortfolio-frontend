@@ -1,22 +1,23 @@
+import { BarChartIcon, DesktopIcon, StarFilledIcon } from '@radix-ui/react-icons';
 import React from 'react';
-import { MdAnalytics, MdCheckCircle, MdCode } from "react-icons/md";
 import FeaturesCard from './FeaturesCard';
+
 
 const features = [
   {
     title: "Skill Showcase",
     description: "Add your technical skills with self-assessed proficiency levels, experience, and project examples.",
-    Icon: MdCode 
+    Icon: DesktopIcon 
   },
   {
     title: "Peer Endorsements",
     description: "Get your skills verified by other developers in the community, building credibility and trust.",
-    Icon: MdCheckCircle 
+    Icon: StarFilledIcon 
   },
   {
     title: "Skill Analytics",
     description: "Visualize your skill distribution and see how your endorsements compare to platform averages.",
-    Icon: MdAnalytics 
+    Icon: BarChartIcon 
   }
 ];
 

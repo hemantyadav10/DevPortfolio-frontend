@@ -275,7 +275,7 @@ function DevCard({
   _id
 }) {
   return (
-    <div className='flex gap-2 p-2 items-center border rounded-md border-[--gray-a6]'>
+    <div className='flex gap-2 p-2 items-center border rounded-md border-[--gray-a6] bg-[--color-background]'>
       <NavLink to={`/profile/${_id}`}>
         <Avatar
           src={profilePictureUrl}

@@ -1,17 +1,19 @@
+import { ArrowRightIcon } from '@radix-ui/react-icons'
 import { Button, Skeleton, Text } from '@radix-ui/themes'
+import { useTheme } from 'next-themes'
 import React from 'react'
+import { Link } from 'react-router'
+import { useFeaturedDevelopers } from '../api/developers/queries'
+import { usePlatformStats } from '../api/stats/queries'
+import lines from '../assets/lines.webp'
+import ray from '../assets/ray.webp'
 import CallToAction from '../components/CallToAction'
+import ErrorMessage from '../components/ErrorMessage'
+import FeaturedDeveloperCard from '../components/FeaturedDeveloperCard'
 import FeaturesSection from '../components/FeaturesSection'
 import Footer from '../components/Footer'
 import LoginButton from '../components/LoginButton'
 import SampleDeveloperCard from '../components/SampleDeveloperCard '
-import { Link } from 'react-router'
-import { usePlatformStats } from '../api/stats/queries'
-import { useFeaturedDevelopers } from '../api/developers/queries'
-import ErrorMessage from '../components/ErrorMessage'
-import FeaturedDeveloperCard from '../components/FeaturedDeveloperCard'
-import { ArrowRightIcon } from '@radix-ui/react-icons'
-import { useTheme } from 'next-themes'
 
 function Home() {
   const { resolvedTheme } = useTheme()
@@ -33,8 +35,9 @@ function Home() {
 
   return (
     <div className='flex flex-col items-center'>
-      <div className=' bg-[--primary] py-8 sm:py-12 px-6 md:px-12 w-full flex-col lg:flex-row flex items-center gap-6 pb-12 '>
-
+      <div className={` bg-[--primary] py-8 sm:py-12 px-6 md:px-12 w-full flex-col lg:flex-row flex items-center gap-6 pb-12 relative bg-cover bg-no-repeat bg-center`}
+        style={{ backgroundImage: `url(${lines})` }}
+      >
         <div className='z-10 flex flex-col flex-1 gap-4'>
           <Text as='div' className='text-[--text] text-xs sm:text-sm font-medium rounded-full px-4 py-1 bg-[--accent-a4] w-max flex items-center'>
             <div className="h-2.5 w-2.5 rounded-full bg-gradient-to-b from-[--accent-8] to-[--accent-10] mr-2" />
@@ -227,7 +230,9 @@ function Home() {
 
 
       <section className='w-full md:px-12'>
-        <div className="py-12 md:py-24 bg-[--primary] w-full text-[--gray-1] md:rounded-3xl">
+        <div className="py-12 md:py-24 bg-[--primary] relative w-full text-[--gray-1] md:rounded-3xl bg-cover bg-no-repeat bg-center"
+          style={{ backgroundImage: `url(${ray})` }}
+        >
           <div className="px-4 md:px-6">
             <div className="mx-auto  flex max-w-[58rem] flex-col items-center space-y-4 text-center text-[--text]">
               <h2 className="text-3xl font-bold sm:text-4xl">

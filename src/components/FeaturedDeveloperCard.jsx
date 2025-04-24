@@ -14,7 +14,7 @@ function FeaturedDeveloperCard({
   _id
 }) {
   return (
-    <div className='w-full p-4 border-t-8 shadow-md rounded-lg border-[--primary] flex flex-col gap-4 hover:shadow-lg transition-shadow h-full bg-[--color-panel-solid]'>
+    <div className='w-full p-4 border-t-8 shadow-md rounded-lg border-t-[--primary] flex flex-col gap-4 hover:shadow-lg transition-shadow h-full border bg-[--color-panel-solid] border-[--gray-a6]'>
       <div className='flex items-start gap-2'>
         <Skeleton loading={loading}>
           <Avatar
