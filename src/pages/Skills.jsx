@@ -18,14 +18,14 @@ function Skills() {
   const hasSkills = data?.length > 0;
 
   return (
-    <div className='md:p-6 p-4 border shadow-lg rounded-lg bg-[--color-panel-solid] border-[--gray-a6]'>
+    <div>
       <Text as='p' className='text-xl font-semibold'>
         Your Skills
       </Text>
       <Text as='p' size={'2'} color='gray' mb={'6'} className='capitalize'>
         Manage and update your technical skills
       </Text>
-      <div className='space-y-8'>
+      <div className='space-y-6 md:p-6 p-4 border shadow-lg rounded-lg bg-[--color-panel-solid] border-[--gray-a6]'>
         {isFetching ? (
           <div className='text-center'>
             <ClipLoader className='mx-auto' color='var(--accent-12)' />
@@ -35,10 +35,10 @@ function Skills() {
         ) : hasSkills ? (
           data.map(({ category, skills, _id }) => (
             <div key={_id}>
-              <Text as='p' className='p-2 text font-medium bg-[--gray-a3] rounded-md capitalize'>
+              <Text as='p' className='text-xl font-semibold capitalize rounded-md'>
                 {category}
               </Text>
-              <div className='flex flex-col gap-4 pt-4'>
+              <div className='grid gap-4 pt-4 sm:grid-cols-2'>
                 {skills.map(({
                   name,
                   proficiencyLevel,

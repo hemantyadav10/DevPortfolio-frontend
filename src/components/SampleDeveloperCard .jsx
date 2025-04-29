@@ -3,6 +3,7 @@ import { useTheme } from 'next-themes';
 import React from 'react';
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { MdStarOutline } from "react-icons/md";
+import avatar from '../assets/HeroSectionUserDp.webp'
 
 
 function SampleDeveloperCard() {
@@ -11,7 +12,7 @@ function SampleDeveloperCard() {
       <div className='flex items-start justify-between'>
         <div className='flex items-start gap-2'>
           <img
-            src="https://hiteshchoudhary.b-cdn.net/coding-hero-v2/ch-bronze.png"
+            src={avatar}
             alt=""
             className='object-cover object-center w-10 rounded-full aspect-square'
           />
