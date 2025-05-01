@@ -25,81 +25,82 @@ function Header() {
 
   return (
     <>
-      <div
-        className={`h-16 flex items-center justify-between p-6 md:px-12 bg-[--primary] sticky top-0 z-50 ${hasShadow ? 'shadow-xl' : ''
-          } `}
-      >
-        <div className='flex items-center gap-2'>
-          <IconButton
-            variant='soft'
-            onClick={() => setOpen(!open)}
-            className='flex md:hidden'
-          >
-            {open ? (
-              <Cross1Icon color='white' height={18} width={18} />
-            ) : (
-              <HamburgerMenuIcon color='white' height={18} width={18} />
-            )}
-          </IconButton>
-          <Logo />
-        </div>
-        <div className='items-center hidden gap-6 font-medium md:flex'>
-          <NavLink
-            to={'/'}
-            className={({ isActive }) => `${isActive ? "text-[--text]" : "text-[--text-muted]"}`}
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to={'/developers'}
-            className={({ isActive }) => `${isActive ? "text-[--text]" : "text-[--text-muted]"}`}
-          >
-            Developers
-          </NavLink>
-        </div>
-        <div className='flex items-center gap-2'>
-          {isAuthenticated && <Notifications />}
-          <div className='items-center hidden gap-2 md:flex'>
-            <ToggleTheme />
-            {isAuthenticated ? (
-              <Dropdowm />
-            ) : (
-              <LoginButton
-                xs='2'
-              />
-            )}
+      <div className={`bg-[--primary] ${hasShadow ? 'shadow-xl' : ''} sticky top-0 z-50`}>
+        <div
+          className={`h-16 flex items-center justify-between p-6 bg-[--primary]   max-w-screen-2xl px-4 md:px-6 lg:px-8 xl:px-12 mx-auto`}
+        >
+          <div className='flex items-center gap-2'>
+            <IconButton
+              variant='soft'
+              onClick={() => setOpen(!open)}
+              className='flex md:hidden'
+            >
+              {open ? (
+                <Cross1Icon color='white' height={18} width={18} />
+              ) : (
+                <HamburgerMenuIcon color='white' height={18} width={18} />
+              )}
+            </IconButton>
+            <Logo />
           </div>
-          <div className='flex items-center gap-2 md:hidden'>
-            <ToggleTheme />
-            {isAuthenticated && <Dropdowm />}
-          </div>
-        </div>
-      </div >
-      {open && (
-        <div className='bg-[--primary] pb-4 px-4 shadow-lg sticky top-16 z-50 md:hidden'>
-          <div className='flex flex-col'>
+          <div className='items-center hidden gap-6 font-medium md:flex'>
             <NavLink
               to={'/'}
-              onClick={() => setOpen(false)}
-              className={({ isActive }) => `${isActive ? "text-[--text] bg-[--accent-a4] " : "text-[--text-muted] hover:bg-[--accent-a3]"} px-6 py-2 rounded-md`}
+              className={({ isActive }) => `${isActive ? "text-[--text]" : "text-[--text-muted]"}`}
             >
               Home
             </NavLink>
             <NavLink
               to={'/developers'}
-              onClick={() => setOpen(false)}
-              className={({ isActive }) => `${isActive ? "text-[--text] bg-[--accent-a4] " : "text-[--text-muted] hover:bg-[--accent-a3]"} px-6 py-2 rounded-md`}
+              className={({ isActive }) => `${isActive ? "text-[--text]" : "text-[--text-muted]"}`}
             >
               Developers
             </NavLink>
-            {!isAuthenticated && (
-              <div className='flex mt-8'>
-                <LoginButton className='flex-1' xs="3" />
-              </div>
-            )}
           </div>
-        </div>
-      )}
+          <div className='flex items-center gap-2'>
+            {isAuthenticated && <Notifications />}
+            <div className='items-center hidden gap-2 md:flex'>
+              <ToggleTheme />
+              {isAuthenticated ? (
+                <Dropdowm />
+              ) : (
+                <LoginButton
+                  xs='2'
+                />
+              )}
+            </div>
+            <div className='flex items-center gap-2 md:hidden'>
+              <ToggleTheme />
+              {isAuthenticated && <Dropdowm />}
+            </div>
+          </div>
+        </div >
+        {open && (
+          <div className='bg-[--primary] pb-4 px-4 shadow-lg sticky top-16 z-50 md:hidden'>
+            <div className='flex flex-col'>
+              <NavLink
+                to={'/'}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) => `${isActive ? "text-[--text] bg-[--accent-a4] " : "text-[--text-muted] hover:bg-[--accent-a3]"} px-6 py-2 rounded-md`}
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to={'/developers'}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) => `${isActive ? "text-[--text] bg-[--accent-a4] " : "text-[--text-muted] hover:bg-[--accent-a3]"} px-6 py-2 rounded-md`}
+              >
+                Developers
+              </NavLink>
+              {!isAuthenticated && (
+                <div className='flex mt-8'>
+                  <LoginButton className='flex-1' xs="3" />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </>
   )
 }
